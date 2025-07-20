@@ -1,6 +1,6 @@
 # 🎬 Mixyup - Modern YouTube Video Galerisi
 
-**Mixyup**, YouTube'dan videoları otomatik çeken, arama kutulu, modern görünümlü ve tamamen API'siz çalışan bir video galeri platformudur.  
+**Mixyup**, Arama kutulu, modern görünümlü ve tamamen API'siz çalışan bir video galeri platformudur.  
 Sadece HTML ve JavaScript ile yapılmış, kullanımı kolay, hafif bir sistemdir.
 
 ---
