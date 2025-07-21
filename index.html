@@ -561,6 +561,66 @@
             margin-top: 1rem;
         }
         
+        /* Download App Modal */
+        .download-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.8);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .download-content {
+            background-color: var(--dark);
+            width: 100%;
+            max-width: 400px;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+            text-align: center;
+        }
+        
+        .download-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+        
+        .download-text {
+            margin-bottom: 1.5rem;
+            color: var(--gray-dark);
+        }
+        
+        .download-btn {
+            display: inline-block;
+            padding: 0.8rem 1.5rem;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            margin-bottom: 1rem;
+        }
+        
+        .close-download {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            background-color: var(--dark-light);
+            color: var(--text-light);
+            border: none;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            cursor: pointer;
+        }
+        
         /* Notifications */
         .notification {
             position: fixed;
@@ -656,6 +716,7 @@
         
         <div class="user-actions">
             <div class="action-icon mobile-search-icon" id="mobileSearchBtn">🔍</div>
+            <div class="action-icon" id="downloadAppBtn" title="Uygulamayı İndir">📱</div>
             <div class="action-icon" id="uploadBtn">📤</div>
             <div class="action-icon" id="notificationsBtn">🔔</div>
         </div>
@@ -724,8 +785,7 @@
     <div class="upload-form-container" id="uploadFormContainer">
         <div class="upload-form">
             <div class="form-header">
-                <div class="form-title">Kanal Oluştur ve
-                  Video Paylaş</div>
+                <div class="form-title">Kanal Oluştur ve Video Paylaş</div>
                 <div class="close-form" id="closeUploadForm">&times;</div>
             </div>
             
@@ -757,6 +817,16 @@
                 
                 <button type="submit" class="submit-btn">Gönder</button>
             </form>
+        </div>
+    </div>
+    
+    <!-- Download App Modal -->
+    <div class="download-modal" id="downloadModal">
+        <div class="download-content">
+            <h2 class="download-title">Mixyup Uygulamasını İndir</h2>
+            <p class="download-text">Mixyup'un tüm özelliklerine mobil cihazınızdan erişmek için uygulamayı indirin.</p>
+            <a href="https://github.com/yazalim-silelim/Mixyup/releases/download/Mixyup_V1/Mixyup.apk" class="download-btn">Uygulamayı İndir</a>
+            <button class="close-download" id="closeDownload">Kapat</button>
         </div>
     </div>
     
@@ -872,142 +942,151 @@
                 views: "430M+ görüntüleme",
                 uploadDate: "2014"
             },
-  {
-    "id": "HC3IcsvbxYU",
-    "title": "How To FIND And USE Creative Commons Videos",
-    "channel": "Hacker Developer",
-    "subscribers": "150K abone",
-    "description": "Creative Commons videolar nasıl bulunur ve içeriklerinizde nasıl kullanılır anlatılıyor.",
-    "category": "education",
-    "duration": "5:51",
-    "views": "500K görüntüleme",
-    "uploadDate": "6 yıl önce"
-  },
-  {
-    "id": "WMv7w4ObLoc",
-    "title": "Last Shot | Creative Common License | Kids | Animated",
-    "channel": "Aemilia Widodo",
-    "subscribers": "50K abone",
-    "description": "Creative Commons lisanslı, çocuklar için animasyonlu kısa film.",
-    "category": "film",
-    "duration": "02:28",
-    "views": "200K görüntüleme",
-    "uploadDate": "4.4 yıl önce"
-  },
-  {
-    "id": "ZWqVD-cTPQI",
-    "title": "Opus Clip AI Tutorial: Create Viral Shorts In ONE Click",
-    "channel": "Opus Clip",
-    "subscribers": "80K abone",
-    "description": "Ücretsiz CC videolarla viral Shorts’lar otomatik hazırlatan araç tanıtımı.",
-    "category": "tech",
-    "duration": "08:52",
-    "views": "150K görüntüleme",
-    "uploadDate": "2 gün önce"
-  },
-  {
-    "id": "FXWLd2f4ICE",
-    "title": "Licensing Your Work with Creative Commons",
-    "channel": "Research University",
-    "subscribers": "120K abone",
-    "description": "Creative Commons lisanslama yöntemleri ve kaynaklar hakkında bilgilendirme.",
-    "category": "education",
-    "duration": "39:46",
-    "views": "90K görüntüleme",
-    "uploadDate": "2.2 yıl önce"
-  },
-  {
-    "id": "_VREXdEvhLE",
-    "title": "16 Viral Shorts Ideas That Feel ILLEGAL To Know",
-    "channel": "ShortsGenius",
-    "subscribers": "200K abone",
-    "description": "Creative Commons videolarla yapabileceğin viral Shorts fikirleri.",
-    "category": "inspiration",
-    "duration": "19:10",
-    "views": "250K görüntüleme",
-    "uploadDate": "1.4 yıl önce"
-  },
-  {
-    "id": "CRWyXlUbkHE",
-    "title": "animasyon çizgi film Bahar",
-    "channel": "Blender Animation Studio",
-    "subscribers": "200K+ abone",
-    "description": "Blender tarafından hazırlanmış kısa animasyon; Creative Commons lisanslı.",
-    "category": "film",
-    "duration": "07:46",
-    "views": "50K+ görüntüleme",
-    "uploadDate": "5.2 yıl önce"
-  },
-  {
-    "id": "hgehqVVScuk",
-    "title": "KISA FİLM - BANK",
-    "channel": "Context Türkçe",
-    "subscribers": "71K abone",
-    "description": "Kısa film ‘BANK’, CC BY 4.0 lisansıyla paylaşılmıştır.",
-    "category": "film",
-    "duration": "7:50",
-    "views": "71K görüntüleme",
-    "uploadDate": "4.7 yıl önce"
-  },
-  {
-    "id": "huqBz7K8REQ",
-    "title": "YERDEKİLER - Kısa Film",
-    "channel": "BİR PAKET MERHAMET",
-    "subscribers": "– abone",
-    "description": "Ödüllü Türk kısa filmi, telif ücretsiz paylaşılmış.",
-    "category": "film",
-    "duration": "11:15",
-    "views": "50K+ görüntüleme",
-    "uploadDate": "8.4 yıl önce"
-  },
-  {
-    "id": "905F4Z8Kc5c",
-    "title": "Stay at Home - Short Film",
-    "channel": "BBC News Türkçe",
-    "subscribers": "455K abone",
-    "description": "Koronavirüs günlerinde İstanbul’da geçen kısa film; CC BY 3.0 lisanslı.",
-    "category": "film",
-    "duration": "04:40",
-    "views": "455K görüntüleme",
-    "uploadDate": "5.3 yıl önce"
-  },
-{
-  "id": "pzBi1nwDn8U",
-  "title": "Survive 100 Days Trapped In A Private Jet, Keep It",
-  "channel": "MrBeast",
-  "subscribers": "20M abone",
-  "description": "MrBeast challenges his pilot Armando to survive 100 days trapped inside a private jet. The winner gets to keep the jet worth $2.5 million!",
-  "category": "entertainment",
-  "duration": "33:03",
-  "views": "45M görüntüleme",
-  "uploadDate": "1 gün önce"
-},
-{
-  "id": "LeYsRMZFUq0",
-  "title": "İnsanlara 1 dakikada harcamaları için 1.000.000 Dolar verdim",
-  "channel": "MrBeast",
-  "subscribers": "20M abone",
-  "description": "MrBeast surprises strangers with $1,000,000 in cash giveaways and life-changing challenges.",
-  "category": "entertainment",
-  "duration": "14:18",
-  "views": "60M görüntüleme",
-  "uploadDate": "1 ay önce"
-},
-{
-  "id": "E60YUgmaRJo",
-  "title": "Erik Dalı (Yok Böyle Erik Dalı Oyunu)",
-  "channel": "Bulent dellal",
-  "subscribers": "645 abone",
-  "description": "Bu videoda açıklama mevcut değil.",
-  "category": "music",
-  "duration": "03:16",
-  "views": "409K görüntüleme",
-  "uploadDate": "8 yıl önce"
-}
-
-
-  
+            {
+                id: "HC3IcsvbxYU",
+                title: "How To FIND And USE Creative Commons Videos",
+                channel: "Hacker Developer",
+                subscribers: "150K abone",
+                description: "Creative Commons videolar nasıl bulunur ve içeriklerinizde nasıl kullanılır anlatılıyor.",
+                category: "education",
+                duration: "5:51",
+                views: "500K görüntüleme",
+                uploadDate: "6 yıl önce"
+            },
+            {
+                id: "WMv7w4ObLoc",
+                title: "Last Shot | Creative Common License | Kids | Animated",
+                channel: "Aemilia Widodo",
+                subscribers: "50K abone",
+                description: "Creative Commons lisanslı, çocuklar için animasyonlu kısa film.",
+                category: "film",
+                duration: "02:28",
+                views: "200K görüntüleme",
+                uploadDate: "4.4 yıl önce"
+            },
+            {
+                id: "ZWqVD-cTPQI",
+                title: "Opus Clip AI Tutorial: Create Viral Shorts In ONE Click",
+                channel: "Opus Clip",
+                subscribers: "80K abone",
+                description: "Ücretsiz CC videolarla viral Shorts'lar otomatik hazırlatan araç tanıtımı.",
+                category: "tech",
+                duration: "08:52",
+                views: "150K görüntüleme",
+                uploadDate: "2 gün önce"
+            },
+            {
+                id: "FXWLd2f4ICE",
+                title: "Licensing Your Work with Creative Commons",
+                channel: "Research University",
+                subscribers: "120K abone",
+                description: "Creative Commons lisanslama yöntemleri ve kaynaklar hakkında bilgilendirme.",
+                category: "education",
+                duration: "39:46",
+                views: "90K görüntüleme",
+                uploadDate: "2.2 yıl önce"
+            },
+            {
+                id: "_VREXdEvhLE",
+                title: "16 Viral Shorts Ideas That Feel ILLEGAL To Know",
+                channel: "ShortsGenius",
+                subscribers: "200K abone",
+                description: "Creative Commons videolarla yapabileceğin viral Shorts fikirleri.",
+                category: "inspiration",
+                duration: "19:10",
+                views: "250K görüntüleme",
+                uploadDate: "1.4 yıl önce"
+            },
+            {
+                id: "CRWyXlUbkHE",
+                title: "animasyon çizgi film Bahar",
+                channel: "Blender Animation Studio",
+                subscribers: "200K+ abone",
+                description: "Blender tarafından hazırlanmış kısa animasyon; Creative Commons lisanslı.",
+                category: "film",
+                duration: "07:46",
+                views: "50K+ görüntüleme",
+                uploadDate: "5.2 yıl önce"
+            },
+            {
+                id: "hgehqVVScuk",
+                title: "KISA FİLM - BANK",
+                channel: "Context Türkçe",
+                subscribers: "71K abone",
+                description: "Kısa film 'BANK', CC BY 4.0 lisansıyla paylaşılmıştır.",
+                category: "film",
+                duration: "7:50",
+                views: "71K görüntüleme",
+                uploadDate: "4.7 yıl önce"
+            },
+            {
+                id: "huqBz7K8REQ",
+                title: "YERDEKİLER - Kısa Film",
+                channel: "BİR PAKET MERHAMET",
+                subscribers: "– abone",
+                description: "Ödüllü Türk kısa filmi, telif ücretsiz paylaşılmış.",
+                category: "film",
+                duration: "11:15",
+                views: "50K+ görüntüleme",
+                uploadDate: "8.4 yıl önce"
+            },
+            {
+                id: "905F4Z8Kc5c",
+                title: "Stay at Home - Short Film",
+                channel: "BBC News Türkçe",
+                subscribers: "455K abone",
+                description: "Koronavirüs günlerinde İstanbul'da geçen kısa film; CC BY 3.0 lisanslı.",
+                category: "film",
+                duration: "04:40",
+                views: "455K görüntüleme",
+                uploadDate: "5.3 yıl önce"
+            },
+            {
+                id: "pzBi1nwDn8U",
+                title: "Survive 100 Days Trapped In A Private Jet, Keep It",
+                channel: "MrBeast",
+                subscribers: "20M abone",
+                description: "MrBeast challenges his pilot Armando to survive 100 days trapped inside a private jet. The winner gets to keep the jet worth $2.5 million!",
+                category: "entertainment",
+                duration: "33:03",
+                views: "45M görüntüleme",
+                uploadDate: "1 gün önce"
+            },
+            {
+                id: "LeYsRMZFUq0",
+                title: "İnsanlara 1 dakikada harcamaları için 1.000.000 Dolar verdim",
+                channel: "MrBeast",
+                subscribers: "20M abone",
+                description: "MrBeast surprises strangers with $1,000,000 in cash giveaways and life-changing challenges.",
+                category: "entertainment",
+                duration: "14:18",
+                views: "60M görüntüleme",
+                uploadDate: "1 ay önce"
+            },
+            {
+                id: "E60YUgmaRJo",
+                title: "Erik Dalı (Yok Böyle Erik Dalı Oyunu)",
+                channel: "Bulent dellal",
+                subscribers: "645 abone",
+                description: "Bu videoda açıklama mevcut değil.",
+                category: "music",
+                duration: "03:16",
+                views: "409K görüntüleme",
+                uploadDate: "8 yıl önce"
+            },
+            {
+                id: "PyJWjVkzps8",
+                title: "Çikolatalı Truff Tarifi |Nasıl Yapılır?",
+                channel: "Nefis yemek tarifleri",
+                subscribers: "645 abone",
+                description: "Az malzemeyle, kısa sürede hem şık hem de lezzetli bir tatlı hazırlamak ister misiniz? O zaman sizi mutfağa alalım çünkü sırada enfes bir truff tarifi var! Özellikle çikolatalı truff tarifi arayanların bayılacağı bu tatlı, görüntüsüyle göz doldururken lezzetiyle de herkesi kendine hayran bırakıyor. 'Tatlı krizine çözüm lazım ama uğraşmak istemiyorum' diyorsanız, bu kolay truff tarifi tam size göre. Üstelik tarifte fırın yok, zahmet yok! Evde kalan bisküvilerle yapabileceğiniz bisküvili truff tarifi, ekonomik oluşuyla da gönülleri fethediyor. Şimdi mutfağa geçme zamanı; hem kolay hem de etkileyici bir sunum için en güzel truff tarifi ile tanışın!",
+                category: "",
+                duration: "01:42",
+                views: "101K görüntüleme",
+                uploadDate: "2 ay önce"
+            }
         ];
+        
         // Unique channels data
         const channels = [
             {
@@ -1105,6 +1184,9 @@
         const searchIcon = document.getElementById('searchIcon');
         const mobileSearchBtn = document.getElementById('mobileSearchBtn');
         const searchContainer = document.getElementById('searchContainer');
+        const downloadAppBtn = document.getElementById('downloadAppBtn');
+        const downloadModal = document.getElementById('downloadModal');
+        const closeDownload = document.getElementById('closeDownload');
         
         // LocalStorage Functions
         function getWatchedVideos() {
@@ -1647,6 +1729,15 @@
         
         document.getElementById('closeUploadForm').addEventListener('click', () => {
             uploadFormContainer.style.display = 'none';
+        });
+        
+        // Download App functionality
+        downloadAppBtn.addEventListener('click', () => {
+            downloadModal.style.display = 'flex';
+        });
+        
+        closeDownload.addEventListener('click', () => {
+            downloadModal.style.display = 'none';
         });
         
         uploadForm.addEventListener('submit', (e) => {
