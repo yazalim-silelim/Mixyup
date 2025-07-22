@@ -6,6 +6,94 @@
     <title>Mixyup | Modern Video Platform</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
+        .preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #0F0F0F;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease;
+        }
+        
+        .preloader-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+        
+        .preloader-icon {
+            width: 40px;
+            height: 40px;
+            background-color: #FF3E3E;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 20px;
+        }
+        
+        .preloader-title {
+            font-size: 24px;
+            font-weight: 700;
+            background: linear-gradient(to right, #FF3E3E, #FF6B6B);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .preloader-bar {
+            width: 300px;
+            height: 4px;
+            background-color: #222222;
+            border-radius: 2px;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+        
+        .preloader-progress {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(to right, #FF3E3E, #FF6B6B);
+            transition: width 0.3s ease;
+        }
+        
+        .preloader-text {
+            color: #AAAAAA;
+            font-size: 14px;
+            margin-bottom: 30px;
+        }
+        
+        .preloader-animation {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .preloader-dot {
+            width: 12px;
+            height: 12px;
+            background-color: #FF3E3E;
+            border-radius: 50%;
+            animation: bounce 1.4s infinite ease-in-out;
+        }
+        
+        .preloader-dot:nth-child(1) { animation-delay: 0s; }
+        .preloader-dot:nth-child(2) { animation-delay: 0.2s; }
+        .preloader-dot:nth-child(3) { animation-delay: 0.4s; }
+        
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); opacity: 0.6; }
+            50% { transform: translateY(-10px); opacity: 1; }
+        }
+
+        /* === ORİJİNAL KOD === */
         :root {
             --primary: #FF3E3E;
             --primary-light: #FF6B6B;
@@ -33,7 +121,6 @@
             overscroll-behavior: none;
         }
         
-        /* Header Styles */
         header {
             display: flex;
             justify-content: space-between;
@@ -195,7 +282,6 @@
             cursor: pointer;
         }
         
-        /* Main Content */
         .container {
             padding: 1rem;
         }
@@ -206,7 +292,6 @@
             margin: 1.5rem 0 1rem;
         }
         
-        /* Category Chips */
         .category-chips {
             display: flex;
             overflow-x: auto;
@@ -238,7 +323,6 @@
             color: var(--dark);
         }
         
-        /* Videos Grid */
         .videos-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -357,7 +441,6 @@
             color: var(--gray-dark);
         }
         
-        /* Video Player */
         .video-player-container {
             display: none;
             padding: 1rem;
@@ -476,7 +559,6 @@
             white-space: pre-line;
         }
         
-        /* Upload Form */
         .upload-form-container {
             display: none;
             position: fixed;
@@ -561,7 +643,6 @@
             margin-top: 1rem;
         }
         
-        /* Download App Modal */
         .download-modal {
             display: none;
             position: fixed;
@@ -621,7 +702,6 @@
             cursor: pointer;
         }
         
-        /* Notifications */
         .notification {
             position: fixed;
             bottom: 1rem;
@@ -636,7 +716,6 @@
             display: none;
         }
         
-        /* Loading */
         .loading {
             display: none;
             position: fixed;
@@ -663,7 +742,6 @@
             to { transform: rotate(360deg); }
         }
         
-        /* Responsive */
         @media (max-width: 768px) {
             .videos-grid {
                 grid-template-columns: 1fr;
@@ -701,7 +779,24 @@
     </style>
 </head>
 <body>
-    <!-- Header -->
+    <!-- YENİ EKLENEN YÜKLEME EKRANI -->
+    <div class="preloader" id="preloader">
+        <div class="preloader-logo">
+            <div class="preloader-icon">M</div>
+            <div class="preloader-title">Mixyup</div>
+        </div>
+        <div class="preloader-bar">
+            <div class="preloader-progress" id="preloaderProgress"></div>
+        </div>
+        <div class="preloader-text" id="preloaderText">Süper deneyim hazırlanıyor...</div>
+        <div class="preloader-animation">
+            <div class="preloader-dot"></div>
+            <div class="preloader-dot"></div>
+            <div class="preloader-dot"></div>
+        </div>
+    </div>
+
+    <!-- ORİJİNAL İÇERİK -->
     <header>
         <div class="logo">
             <div class="logo-icon">M</div>
@@ -722,7 +817,6 @@
         </div>
     </header>
     
-    <!-- Main Content -->
     <div class="container">
         <div class="category-chips">
             <button class="category-chip active" data-category="all">Tümü</button>
@@ -738,7 +832,6 @@
         </div>
     </div>
     
-    <!-- Video Player -->
     <div class="video-player-container" id="videoPlayerPage">
         <div class="video-player">
             <iframe id="youtubePlayer" frameborder="0" allowfullscreen></iframe>
@@ -781,7 +874,6 @@
         </div>
     </div>
     
-    <!-- Upload Form -->
     <div class="upload-form-container" id="uploadFormContainer">
         <div class="upload-form">
             <div class="form-header">
@@ -820,7 +912,6 @@
         </div>
     </div>
     
-    <!-- Download App Modal -->
     <div class="download-modal" id="downloadModal">
         <div class="download-content">
             <h2 class="download-title">Mixyup Uygulamasını İndir</h2>
@@ -830,18 +921,53 @@
         </div>
     </div>
     
-    <!-- Notification -->
     <div class="notification" id="notification">
         <div id="notificationText"></div>
     </div>
     
-    <!-- Loading -->
     <div class="loading" id="loading">
         <div class="spinner"></div>
     </div>
     
     <script>
-        // Video Database with channels
+        // YÜKLEME EKRANI KODU
+        document.addEventListener('DOMContentLoaded', function() {
+    const preloader = document.getElementById('preloader');
+    const progressBar = document.getElementById('preloaderProgress');
+    const statusText = document.getElementById('preloaderText');
+    
+    const messages = [
+        "Video veritabanı yükleniyor...",
+        "Kişiselleştirilmiş öneriler hazırlanıyor...",
+        "Hazır!"
+    ];
+    
+    let progress = 0;
+    let currentMessage = 0;
+    
+    const interval = setInterval(() => {
+        progress += Math.random() * 30 + 10; // Daha hızlı ilerleme
+        if (progress > 100) progress = 100;
+        progressBar.style.width = progress + '%';
+        
+        if (progress > (currentMessage + 1) * 30 && currentMessage < messages.length - 1) {
+            currentMessage++;
+            statusText.textContent = messages[currentMessage];
+        }
+        
+        if (progress >= 100) {
+            clearInterval(interval);
+            setTimeout(() => {
+                preloader.style.opacity = '0';
+                setTimeout(() => {
+                    preloader.style.display = 'none';
+                }, 300); // Daha kısa geçiş süresi
+            }, 300);
+        }
+    }, 150); // Daha sık güncelleme (150ms)
+});
+
+        // ORİJİNAL KOD
         const videos = [
             {
                 id: "pjbNlFMolqU",
@@ -1140,79 +1266,21 @@
                 views: "4,2Mn görüntüleme",
                 uploadDate: "5 ay önce"
             }
-            
         ];
         
-        // Unique channels data
         const channels = [
             {
                 name: "Mixyup",
                 subscribers: "1.2M abone",
                 description: "Teknoloji ve yazılım içerikleri",
                 avatar: "M"
-            },
-            {
-                name: "MRBeast",
-                subscribers: "416M abone",
-                descreption: "challenge yapmaktan ve zenginliği ile tanınır",
-                avatar: "M"
-            },
-            {
-                name: "PSY",
-                subscribers: "18.2M abone",
-                description: "PSY kanalı",
-                avatar: "P"
-            },
-            {
-                name: "Kodlama Dünyası",
-                subscribers: "750K abone",
-                description: "Programlama ve yazılım eğitimleri",
-                avatar: "K"
-            },
-            {
-                name: "YouTube Audio Library",
-                subscribers: "–– abone",
-                description: "YouTube'un resmi telifsiz müzik kütüphanesi",
-                avatar: "Y"
-            },
-            {
-                name: "Turkish Instrumental Music",
-                subscribers: "–– abone",
-                description: "Türk enstrümantal müzikleri",
-                avatar: "T"
-            },
-            {
-                name: "AShamaluevMusic",
-                subscribers: "–– abone",
-                description: "Royalty free müzikler",
-                avatar: "A"
-            },
-            {
-                name: "Snapmuse",
-                subscribers: "–– abone",
-                description: "Telifsiz müzikler",
-                avatar: "S"
-            },
-            {
-                name: "Dony Permedi",
-                subscribers: "–– abone",
-                description: "Animasyon ve kısa filmler",
-                avatar: "D"
-            },
-            {
-                name: "NoCopyrightSounds",
-                subscribers: "34M+ abone",
-                description: "Telifsiz elektronik müzikler",
-                avatar: "N"
             }
         ];
         
-        // Current Video and Category
         let currentVideo = null;
         let currentCategory = "all";
         let searchQuery = "";
         
-        // DOM Elements
         const videosGrid = document.getElementById('videosGrid');
         const videoPlayerPage = document.getElementById('videoPlayerPage');
         const youtubePlayer = document.getElementById('youtubePlayer');
@@ -1244,7 +1312,6 @@
         const downloadModal = document.getElementById('downloadModal');
         const closeDownload = document.getElementById('closeDownload');
         
-        // LocalStorage Functions
         function getWatchedVideos() {
             return JSON.parse(localStorage.getItem('watchedVideos')) || [];
         }
@@ -1301,7 +1368,6 @@
                 followedChannels.push(channel);
                 showNotification(`${channel} kanalını takip etmeye başladınız!`);
                 
-                // Request notification permission
                 if (Notification.permission !== 'granted') {
                     Notification.requestPermission();
                 }
@@ -1311,7 +1377,7 @@
             }
             
             localStorage.setItem('followedChannels', JSON.stringify(followedChannels));
-            return index === -1; // Returns true if followed, false if unfollowed
+            return index === -1;
         }
         
         function isChannelFollowed(channel) {
@@ -1365,7 +1431,6 @@
             localStorage.setItem('searchHistory', JSON.stringify(searchHistory));
         }
         
-        // UI Functions
         function showNotification(message) {
             notificationText.textContent = message;
             notification.style.display = 'block';
@@ -1374,7 +1439,6 @@
                 notification.style.display = 'none';
             }, 3000);
             
-            // Show browser notification if permission granted
             if (Notification.permission === 'granted') {
                 new Notification('Mixyup', {
                     body: message
@@ -1399,7 +1463,6 @@
             addToSearchHistory(query);
             searchQuery = query.toLowerCase();
             
-            // Show results in dropdown
             const matchingVideos = videos.filter(video => 
                 video.title.toLowerCase().includes(searchQuery) || 
                 video.channel.toLowerCase().includes(searchQuery))
@@ -1446,7 +1509,6 @@
                         `;
                         
                         channelItem.addEventListener('click', () => {
-                            // Filter videos by this channel
                             const channelVideos = videos.filter(v => v.channel === channel.name);
                             
                             currentCategory = "all";
@@ -1464,7 +1526,6 @@
                     });
                 }
                 
-                // Add search history
                 const searchHistory = getSearchHistory();
                 if (searchHistory.length > 0) {
                     const historyHeader = document.createElement('div');
@@ -1508,7 +1569,6 @@
             const likes = getLikes();
             const dislikes = getDislikes();
             
-            // Filter videos based on search query
             let filteredVideos = [...videosToRender];
             
             if (searchQuery) {
@@ -1517,12 +1577,10 @@
                     video.channel.toLowerCase().includes(searchQuery));
             }
             
-            // Filter by category
             if (currentCategory !== "all") {
                 filteredVideos = filteredVideos.filter(video => video.category === currentCategory);
             }
             
-            // Skip disliked videos unless we're showing all
             filteredVideos = filteredVideos.filter(video => !dislikes[video.id]);
             
             filteredVideos.forEach(video => {
@@ -1561,7 +1619,6 @@
                 videosGrid.appendChild(videoCard);
             });
             
-            // Add event listeners
             document.querySelectorAll('.video-card').forEach(card => {
                 card.addEventListener('click', () => {
                     const videoId = card.dataset.videoId;
@@ -1577,7 +1634,6 @@
                     const isFollowing = toggleFollowChannel(channel);
                     this.textContent = isFollowing ? 'Takipte' : 'Takip Et';
                     
-                    // Update subscribe button if we're on that channel's video
                     if (currentVideo && currentVideo.channel === channel) {
                         subscribeBtn.textContent = isFollowing ? 'Takipte' : 'Takip Et';
                         subscribeBtn.classList.toggle('following', isFollowing);
@@ -1592,11 +1648,9 @@
             
             currentVideo = video;
             
-            // Show video player
             document.querySelector('.container').style.display = 'none';
             videoPlayerPage.style.display = 'block';
             
-            // Set video content
             youtubePlayer.src = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
             videoPlayerTitle.textContent = video.title;
             channelAvatar.textContent = video.channel.charAt(0);
@@ -1604,22 +1658,17 @@
             subscriberCount.textContent = video.subscribers;
             videoDescription.textContent = video.description;
             
-            // Update like/dislike buttons
             updateLikeDislikeButtons();
             
-            // Update subscribe button
             subscribeBtn.textContent = isChannelFollowed(video.channel) ? 'Takipte' : 'Takip Et';
             subscribeBtn.classList.toggle('following', isChannelFollowed(video.channel));
             
-            // Update save button
             saveBtn.innerHTML = isVideoSaved(video.id) ? 
                 `<span>✔️</span><span>Kaydedildi</span>` : 
                 `<span>➕</span><span>Kaydet</span>`;
             
-            // Mark as watched
             setWatchedVideo(videoId);
             
-            // Update watched badges
             document.querySelectorAll('.watched-badge').forEach(badge => {
                 badge.style.display = 'none';
             });
@@ -1630,7 +1679,6 @@
                 if (badge) badge.style.display = 'block';
             }
             
-            // Scroll to top
             window.scrollTo(0, 0);
         }
         
@@ -1649,7 +1697,6 @@
             likeBtn.classList.toggle('active', likes[currentVideo.id]);
             dislikeBtn.classList.toggle('active', dislikes[currentVideo.id]);
             
-            // Simple count simulation
             likeCount.textContent = likes[currentVideo.id] ? '1' : '0';
             dislikeCount.textContent = dislikes[currentVideo.id] ? '1' : '0';
         }
@@ -1665,7 +1712,6 @@
             
             const mailtoLink = `mailto:geniskapisirketi@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
             
-            // For mobile devices
             if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
                 alert("Video paylaşım isteğiniz hazırlandı! E-posta uygulamanız açılacak. Eğer açılmazsa, lütfen geniskapisirketi@gmail.com adresine yukarıdaki bilgilerle e-posta gönderin.");
             }
@@ -1673,7 +1719,6 @@
             window.location.href = mailtoLink;
         }
         
-        // Event Listeners
         likeBtn.addEventListener('click', () => {
             if (!currentVideo) return;
             
@@ -1690,7 +1735,7 @@
             }
             
             updateLikeDislikeButtons();
-            renderVideos(); // Re-render to potentially hide disliked videos
+            renderVideos();
         });
         
         dislikeBtn.addEventListener('click', () => {
@@ -1709,7 +1754,7 @@
             }
             
             updateLikeDislikeButtons();
-            renderVideos(); // Re-render to hide this video if disliked
+            renderVideos();
         });
         
         subscribeBtn.addEventListener('click', () => {
@@ -1719,7 +1764,6 @@
             subscribeBtn.textContent = isFollowing ? 'Takipte' : 'Takip Et';
             subscribeBtn.classList.toggle('following', isFollowing);
             
-            // Update follow buttons in video cards
             document.querySelectorAll('.follow-btn').forEach(btn => {
                 if (btn.dataset.channel === currentVideo.channel) {
                     btn.textContent = isFollowing ? 'Takipte' : 'Takip Et';
@@ -1751,7 +1795,6 @@
                     showNotification('Paylaşım iptal edildi');
                 });
             } else {
-                // Fallback for browsers that don't support Web Share API
                 navigator.clipboard.writeText(shareUrl).then(() => {
                     showNotification('Link kopyalandı!');
                 }).catch(err => {
@@ -1764,7 +1807,6 @@
         channelDetails.addEventListener('click', () => {
             if (!currentVideo) return;
             
-            // Filter videos by this channel
             const channelVideos = videos.filter(v => v.channel === currentVideo.channel);
             
             currentCategory = "all";
@@ -1787,7 +1829,6 @@
             uploadFormContainer.style.display = 'none';
         });
         
-        // Download App functionality
         downloadAppBtn.addEventListener('click', () => {
             downloadModal.style.display = 'flex';
         });
@@ -1804,7 +1845,6 @@
             const description = document.getElementById('videoDescription').value;
             const category = document.getElementById('videoCategory').value;
             
-            // Extract YouTube video ID
             const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
             const match = link.match(regExp);
             
@@ -1817,14 +1857,11 @@
             
             showLoading();
             
-            // Simulate processing
             setTimeout(() => {
                 hideLoading();
                 uploadFormContainer.style.display = 'none';
                 uploadForm.reset();
                 
-                // In a real app, you would add the video to your database
-                // For this demo, we'll just send an email
                 sendVideoByEmail({
                     link: `https://www.youtube.com/watch?v=${videoId}`,
                     title: title,
@@ -1836,7 +1873,6 @@
             }, 1500);
         });
         
-        // Category filter
         categoryChips.forEach(chip => {
             chip.addEventListener('click', () => {
                 categoryChips.forEach(c => c.classList.remove('active'));
@@ -1846,7 +1882,6 @@
             });
         });
         
-        // Search functionality
         searchInput.addEventListener('input', () => {
             performSearch(searchInput.value);
         });
@@ -1890,12 +1925,10 @@
             }
         });
         
-        // Notifications
         document.getElementById('notificationsBtn').addEventListener('click', () => {
             showNotification('Yeni bildiriminiz yok');
         });
         
-        // Logo click to go home
         document.querySelector('.logo').addEventListener('click', () => {
             hideVideo();
             currentCategory = "all";
@@ -1908,10 +1941,8 @@
             renderVideos();
         });
         
-        // Initialize
         renderVideos();
         
-        // Simulate new video notification for followed channels
         if (getFollowedChannels().length > 0 && Notification.permission === 'granted') {
             setTimeout(() => {
                 new Notification('Mixyup', {
