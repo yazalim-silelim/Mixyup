@@ -677,6 +677,13 @@
             color: var(--gray-dark);
         }
         
+        .download-options {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        
         .download-btn {
             display: inline-block;
             padding: 0.8rem 1.5rem;
@@ -688,7 +695,11 @@
             font-weight: 600;
             cursor: pointer;
             text-decoration: none;
-            margin-bottom: 1rem;
+            width: 100%;
+        }
+        
+        .download-btn.tv {
+            background-color: var(--dark-light);
         }
         
         .close-download {
@@ -914,9 +925,14 @@
     
     <div class="download-modal" id="downloadModal">
         <div class="download-content">
-            <h2 class="download-title">Mixyup Uygulamasını İndir</h2>
-            <p class="download-text">Mixyup'un tüm özelliklerine mobil cihazınızdan erişmek için uygulamayı indirin.</p>
-            <a href="https://github.com/yazalim-silelim/Mixyup/releases/download/Mixyup_V1/MixyupV1.apk" class="download-btn">Uygulamayı İndir</a>
+            <h2 class="download-title">Mixyup Uygulamalarını İndir</h2>
+            <p class="download-text">Mixyup'un tüm özelliklerine mobil ve TV cihazlarınızdan erişmek için uygulamaları indirin.</p>
+            
+            <div class="download-options">
+                <a href="https://github.com/yazalim-silelim/Mixyup/releases/download/Mixyup_V1/MixyupV1.apk" class="download-btn">Mobil Uygulama (Android)</a>
+                <a href="https://github.com/yazalim-silelim/MixyupTV/releases/download/MixyupTV_V1/MixyupTV.apk" class="download-btn tv">TV Uygulaması (Android TV)</a>
+            </div>
+            
             <button class="close-download" id="closeDownload">Kapat</button>
         </div>
     </div>
@@ -1224,7 +1240,7 @@
             },
             {
             id: "7Civt2GT6VM",
-                title: "MEKSİKA’da İLK GÜN NELER YAŞANDI?",
+                title: "MEKSİKA'da İLK GÜN NELER YAŞANDI?",
                 channel: "Japon Hamza",
                 subscribers: "723B abone",
                 description: "eSIM io ile yurt dışında avantajlı fiyatlarla özgürce internete bağlan! #reklamiçerir",
