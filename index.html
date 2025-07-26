@@ -2,109 +2,29 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Mixyup | Modern Video Platform</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        .preloader {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: #0F0F0F;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-            transition: opacity 0.5s ease;
-        }
-        
-        .preloader-logo {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 30px;
-        }
-        
-        .preloader-icon {
-            width: 40px;
-            height: 40px;
-            background-color: #FF3E3E;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: bold;
-            font-size: 20px;
-        }
-        
-        .preloader-title {
-            font-size: 24px;
-            font-weight: 700;
-            background: linear-gradient(to right, #FF3E3E, #FF6B6B);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        
-        .preloader-bar {
-            width: 300px;
-            height: 4px;
-            background-color: #222222;
-            border-radius: 2px;
-            overflow: hidden;
-            margin-bottom: 20px;
-        }
-        
-        .preloader-progress {
-            height: 100%;
-            width: 0%;
-            background: linear-gradient(to right, #FF3E3E, #FF6B6B);
-            transition: width 0.3s ease;
-        }
-        
-        .preloader-text {
-            color: #AAAAAA;
-            font-size: 14px;
-            margin-bottom: 30px;
-        }
-        
-        .preloader-animation {
-            display: flex;
-            gap: 8px;
-        }
-        
-        .preloader-dot {
-            width: 12px;
-            height: 12px;
-            background-color: #FF3E3E;
-            border-radius: 50%;
-            animation: bounce 1.4s infinite ease-in-out;
-        }
-        
-        .preloader-dot:nth-child(1) { animation-delay: 0s; }
-        .preloader-dot:nth-child(2) { animation-delay: 0.2s; }
-        .preloader-dot:nth-child(3) { animation-delay: 0.4s; }
-        
-        @keyframes bounce {
-            0%, 100% { transform: translateY(0); opacity: 0.6; }
-            50% { transform: translateY(-10px); opacity: 1; }
-        }
-
-        /* === ORİJİNAL KOD === */
         :root {
             --primary: #FF3E3E;
             --primary-light: #FF6B6B;
+            --primary-dark: #CC0000;
             --dark: #0F0F0F;
             --dark-light: #222222;
+            --dark-lighter: #333333;
             --light: #FFFFFF;
             --gray: #F1F1F1;
             --gray-dark: #AAAAAA;
             --text-dark: #030303;
             --text-light: #F1F1F1;
             --shadow: 0 4px 12px rgba(0,0,0,0.15);
+            --shadow-lg: 0 8px 24px rgba(0,0,0,0.2);
+            --transition: all 0.3s ease;
+            --border-radius: 12px;
+            --sidebar-width: 240px;
+            --sidebar-collapsed: 72px;
         }
         
         * {
@@ -112,15 +32,131 @@
             padding: 0;
             box-sizing: border-box;
             font-family: 'Inter', sans-serif;
+            -webkit-tap-highlight-color: transparent;
         }
         
         body {
             background-color: var(--dark);
             color: var(--text-light);
-            transition: all 0.2s ease;
+            transition: var(--transition);
             overscroll-behavior: none;
+            display: flex;
+            min-height: 100vh;
+            touch-action: manipulation;
         }
         
+        /* Sidebar Styles */
+        .sidebar {
+            width: var(--sidebar-width);
+            background-color: var(--dark);
+            height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            padding-top: 60px;
+            display: flex;
+            flex-direction: column;
+            z-index: 90;
+            transition: var(--transition);
+            border-right: 1px solid var(--dark-light);
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+        
+        .sidebar.collapsed {
+            width: var(--sidebar-collapsed);
+        }
+        
+        .sidebar-item {
+            display: flex;
+            align-items: center;
+            padding: 0.8rem 1rem;
+            margin: 0.2rem 0.5rem;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: var(--transition);
+            white-space: nowrap;
+            overflow: hidden;
+        }
+        
+        .sidebar-item:hover {
+            background-color: var(--dark-light);
+        }
+        
+        .sidebar-item.active {
+            background-color: var(--dark-light);
+            font-weight: 600;
+        }
+        
+        .sidebar-item i {
+            font-size: 1.2rem;
+            margin-right: 1rem;
+            min-width: 24px;
+        }
+        
+        .sidebar.collapsed .sidebar-item span {
+            display: none;
+        }
+        
+        .sidebar-divider {
+            height: 1px;
+            background-color: var(--dark-light);
+            margin: 0.8rem 1rem;
+        }
+        
+        .sidebar-title {
+            padding: 1rem 1rem 0.5rem;
+            font-size: 0.9rem;
+            color: var(--gray-dark);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .sidebar.collapsed .sidebar-title {
+            display: none;
+        }
+        
+        .sidebar-footer {
+            margin-top: auto;
+            padding: 1rem;
+            font-size: 0.8rem;
+            color: var(--gray-dark);
+        }
+        
+        .sidebar.collapsed .sidebar-footer {
+            display: none;
+        }
+        
+        .toggle-sidebar {
+            position: absolute;
+            top: 10px;
+            right: -12px;
+            background-color: var(--dark-light);
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 95;
+            border: 2px solid var(--dark);
+        }
+        
+        /* Main Content Styles */
+        .main-content {
+            flex: 1;
+            margin-left: var(--sidebar-width);
+            transition: var(--transition);
+            width: calc(100% - var(--sidebar-width));
+        }
+        
+        .sidebar.collapsed ~ .main-content {
+            margin-left: var(--sidebar-collapsed);
+            width: calc(100% - var(--sidebar-collapsed));
+        }
+        
+        /* Header Styles */
         header {
             display: flex;
             justify-content: space-between;
@@ -131,6 +167,7 @@
             z-index: 100;
             background-color: var(--dark);
             box-shadow: var(--shadow);
+            border-bottom: 1px solid var(--dark-light);
         }
         
         .logo {
@@ -173,11 +210,19 @@
             width: 100%;
             padding: 0.6rem 1rem;
             border-radius: 20px;
-            border: 1px solid #333;
+            border: 1px solid var(--dark-light);
             background-color: var(--dark-light);
             color: var(--text-light);
             font-size: 1rem;
             padding-right: 40px;
+            transition: var(--transition);
+        }
+        
+        .search-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            background-color: var(--dark);
+            box-shadow: 0 0 0 2px rgba(255, 62, 62, 0.2);
         }
         
         .search-icon {
@@ -186,6 +231,11 @@
             font-size: 1rem;
             cursor: pointer;
             color: var(--gray-dark);
+            transition: var(--transition);
+        }
+        
+        .search-icon:hover {
+            color: var(--text-light);
         }
         
         .search-results {
@@ -194,12 +244,14 @@
             left: 0;
             width: 100%;
             background-color: var(--dark);
-            border-radius: 0 0 12px 12px;
-            box-shadow: var(--shadow);
+            border-radius: 0 0 var(--border-radius) var(--border-radius);
+            box-shadow: var(--shadow-lg);
             z-index: 10;
             max-height: 400px;
             overflow-y: auto;
             display: none;
+            border: 1px solid var(--dark-light);
+            border-top: none;
         }
         
         .search-result-item {
@@ -207,7 +259,8 @@
             display: flex;
             align-items: center;
             cursor: pointer;
-            border-bottom: 1px solid #333;
+            border-bottom: 1px solid var(--dark-light);
+            transition: var(--transition);
         }
         
         .search-result-item:hover {
@@ -224,6 +277,7 @@
         
         .search-result-info {
             flex: 1;
+            overflow: hidden;
         }
         
         .search-result-title {
@@ -246,7 +300,8 @@
             display: flex;
             align-items: center;
             cursor: pointer;
-            border-bottom: 1px solid #333;
+            border-bottom: 1px solid var(--dark-light);
+            transition: var(--transition);
         }
         
         .search-channel-avatar {
@@ -260,6 +315,7 @@
             color: white;
             font-weight: bold;
             margin-right: 1rem;
+            flex-shrink: 0;
         }
         
         .search-channel-name {
@@ -274,14 +330,39 @@
         .user-actions {
             display: flex;
             align-items: center;
-            gap: 1rem;
+            gap: 0.5rem;
         }
         
         .action-icon {
             font-size: 1.2rem;
             cursor: pointer;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: var(--transition);
         }
         
+        .action-icon:hover {
+            background-color: var(--dark-light);
+        }
+        
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background-color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        
+        /* Container Styles */
         .container {
             padding: 1rem;
         }
@@ -289,16 +370,18 @@
         .section-title {
             font-size: 1.2rem;
             font-weight: 600;
-            margin: 1.5rem 0 1rem;
+            margin: 1rem 0 0.8rem;
         }
         
+        /* Category Chips */
         .category-chips {
             display: flex;
             overflow-x: auto;
-            gap: 0.8rem;
+            gap: 0.6rem;
             padding: 0.5rem 0;
-            margin-bottom: 1rem;
+            margin-bottom: 0.8rem;
             scrollbar-width: none;
+            -webkit-overflow-scrolling: touch;
         }
         
         .category-chips::-webkit-scrollbar {
@@ -309,13 +392,17 @@
             background-color: var(--dark-light);
             color: var(--text-light);
             border: none;
-            padding: 0.5rem 1rem;
+            padding: 0.5rem 0.8rem;
             border-radius: 16px;
-            font-size: 0.9rem;
+            font-size: 0.8rem;
             cursor: pointer;
             white-space: nowrap;
             flex-shrink: 0;
-            transition: all 0.2s;
+            transition: var(--transition);
+        }
+        
+        .category-chip:hover {
+            background-color: var(--dark-lighter);
         }
         
         .category-chip.active {
@@ -323,16 +410,17 @@
             color: var(--dark);
         }
         
+        /* Videos Grid */
         .videos-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 1.2rem;
-            margin-top: 1rem;
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            gap: 1rem;
+            margin-top: 0.8rem;
         }
         
         .video-card {
             cursor: pointer;
-            transition: transform 0.2s;
+            transition: var(--transition);
         }
         
         .video-card.hidden {
@@ -340,7 +428,7 @@
         }
         
         .video-card:hover {
-            transform: scale(1.02);
+            transform: translateY(-5px);
         }
         
         .thumbnail-container {
@@ -348,8 +436,9 @@
             width: 100%;
             padding-bottom: 56.25%;
             background-color: var(--dark-light);
-            border-radius: 12px;
+            border-radius: var(--border-radius);
             overflow: hidden;
+            margin-bottom: 0.6rem;
         }
         
         .thumbnail {
@@ -359,34 +448,38 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
+            transition: var(--transition);
+        }
+        
+        .video-card:hover .thumbnail {
+            opacity: 0.9;
         }
         
         .video-duration {
             position: absolute;
-            bottom: 8px;
-            right: 8px;
+            bottom: 6px;
+            right: 6px;
             background-color: rgba(0,0,0,0.8);
             color: white;
             padding: 0.2rem 0.4rem;
             border-radius: 4px;
-            font-size: 0.8rem;
+            font-size: 0.7rem;
         }
         
         .watched-badge {
             position: absolute;
-            top: 8px;
-            left: 8px;
+            top: 6px;
+            left: 6px;
             background-color: var(--primary);
             color: white;
             padding: 0.2rem 0.4rem;
             border-radius: 4px;
-            font-size: 0.8rem;
+            font-size: 0.7rem;
             display: none;
         }
         
         .video-info {
             display: flex;
-            margin-top: 0.8rem;
         }
         
         .channel-icon {
@@ -394,7 +487,7 @@
             height: 36px;
             border-radius: 50%;
             background-color: var(--dark-light);
-            margin-right: 0.8rem;
+            margin-right: 0.6rem;
             flex-shrink: 0;
             display: flex;
             align-items: center;
@@ -409,17 +502,18 @@
         }
         
         .video-title {
-            font-size: 1rem;
+            font-size: 0.9rem;
             font-weight: 500;
-            margin-bottom: 0.3rem;
+            margin-bottom: 0.2rem;
             display: -webkit-box;
             -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
             overflow: hidden;
+            line-height: 1.3;
         }
         
         .channel-name {
-            font-size: 0.9rem;
+            font-size: 0.8rem;
             color: var(--gray-dark);
             margin-bottom: 0.2rem;
             display: flex;
@@ -430,28 +524,62 @@
             background: none;
             border: none;
             color: var(--primary);
-            font-size: 0.8rem;
-            margin-left: 0.5rem;
+            font-size: 0.7rem;
+            margin-left: 0.3rem;
             cursor: pointer;
             padding: 0.2rem 0;
+            transition: var(--transition);
+        }
+        
+        .follow-btn:hover {
+            opacity: 0.8;
         }
         
         .video-stats {
-            font-size: 0.9rem;
+            font-size: 0.8rem;
             color: var(--gray-dark);
+            display: flex;
+            align-items: center;
         }
         
+        .video-stats i {
+            margin-left: 0.3rem;
+            font-size: 0.6rem;
+        }
+        
+        /* Video Player Page */
         .video-player-container {
             display: none;
             padding: 1rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .video-player-wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .video-player-main {
+            flex: 1;
+            min-width: 0;
+        }
+        
+        .video-player-sidebar {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
         }
         
         .video-player {
             width: 100%;
             aspect-ratio: 16/9;
             background-color: black;
-            border-radius: 12px;
+            border-radius: var(--border-radius);
             overflow: hidden;
+            margin-bottom: 1rem;
         }
         
         .video-player iframe {
@@ -461,48 +589,83 @@
         }
         
         .video-info-container {
-            margin-top: 1rem;
+            margin-bottom: 1.5rem;
         }
         
         .video-player-title {
             font-size: 1.2rem;
             font-weight: 600;
             margin-bottom: 0.8rem;
+            line-height: 1.3;
         }
         
         .video-actions {
             display: flex;
-            gap: 1.5rem;
-            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding-bottom: 0.8rem;
+            border-bottom: 1px solid var(--dark-light);
+            gap: 0.5rem;
+        }
+        
+        .video-actions-left {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+        
+        .video-actions-right {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            flex-wrap: wrap;
         }
         
         .action-button {
             display: flex;
             align-items: center;
-            gap: 0.5rem;
+            gap: 0.3rem;
             background: none;
             border: none;
             color: var(--text-light);
             cursor: pointer;
+            padding: 0.4rem 0.6rem;
+            border-radius: 20px;
+            transition: var(--transition);
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+        
+        .action-button:hover {
+            background-color: var(--dark-light);
         }
         
         .action-button.active {
             color: var(--primary);
         }
         
+        .action-button i {
+            font-size: 1rem;
+        }
+        
         .channel-info {
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1rem 0;
-            border-top: 1px solid #333;
-            border-bottom: 1px solid #333;
+            flex-direction: column;
+            gap: 1rem;
+            padding: 0.8rem 0;
+            border-top: 1px solid var(--dark-light);
+            border-bottom: 1px solid var(--dark-light);
+            margin-bottom: 1rem;
         }
         
         .channel-details {
             display: flex;
             align-items: center;
-            gap: 1rem;
+            gap: 0.8rem;
+            cursor: pointer;
         }
         
         .channel-avatar {
@@ -516,7 +679,6 @@
             color: var(--text-light);
             font-weight: bold;
             flex-shrink: 0;
-            cursor: pointer;
         }
         
         .channel-meta {
@@ -527,10 +689,11 @@
             font-weight: 600;
             color: var(--text-light);
             margin-bottom: 0.2rem;
+            font-size: 1rem;
         }
         
         .subscriber-count {
-            font-size: 0.9rem;
+            font-size: 0.8rem;
             color: var(--gray-dark);
         }
         
@@ -538,11 +701,17 @@
             background-color: var(--primary);
             color: white;
             border: none;
-            padding: 0.6rem 1.2rem;
+            padding: 0.6rem 1rem;
             border-radius: 20px;
             font-weight: 600;
             cursor: pointer;
             flex-shrink: 0;
+            transition: var(--transition);
+            width: 100%;
+        }
+        
+        .subscribe-btn:hover {
+            background-color: var(--primary-dark);
         }
         
         .subscribe-btn.following {
@@ -552,13 +721,224 @@
         .video-description {
             background-color: var(--dark-light);
             padding: 1rem;
-            border-radius: 12px;
-            margin-top: 1.5rem;
-            font-size: 0.95rem;
+            border-radius: var(--border-radius);
+            font-size: 0.9rem;
             line-height: 1.5;
             white-space: pre-line;
         }
         
+        .description-collapse {
+            display: none;
+            color: var(--gray-dark);
+            margin-top: 0.5rem;
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+        
+        .description-collapse:hover {
+            color: var(--text-light);
+        }
+        
+        .video-description.collapsed {
+            max-height: 80px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .video-description.collapsed::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 40px;
+            background: linear-gradient(to bottom, transparent, var(--dark-light));
+        }
+        
+        /* Related Videos */
+        .related-videos {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+        
+        .related-video-item {
+            display: flex;
+            gap: 0.6rem;
+            cursor: pointer;
+        }
+        
+        .related-video-thumbnail {
+            width: 120px;
+            height: 68px;
+            border-radius: 6px;
+            object-fit: cover;
+            flex-shrink: 0;
+        }
+        
+        .related-video-info {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+        }
+        
+        .related-video-title {
+            font-weight: 500;
+            margin-bottom: 0.2rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            line-height: 1.3;
+            font-size: 0.9rem;
+        }
+        
+        .related-video-channel {
+            font-size: 0.8rem;
+            color: var(--gray-dark);
+            margin-bottom: 0.1rem;
+        }
+        
+        .related-video-stats {
+            font-size: 0.7rem;
+            color: var(--gray-dark);
+        }
+        
+        /* Comments Section */
+        .comments-section {
+            margin-top: 1.5rem;
+        }
+        
+        .comments-header {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            margin-bottom: 1rem;
+            gap: 0.5rem;
+        }
+        
+        .comments-count {
+            font-weight: 600;
+            margin-right: 0.5rem;
+            font-size: 0.9rem;
+        }
+        
+        .comments-sort {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+            color: var(--gray-dark);
+            font-size: 0.8rem;
+            cursor: pointer;
+        }
+        
+        .comment-form {
+            display: flex;
+            gap: 0.8rem;
+            margin-bottom: 1rem;
+        }
+        
+        .comment-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background-color: var(--dark-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-light);
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+        
+        .comment-input {
+            flex: 1;
+            padding: 0.6rem 0.8rem;
+            border-radius: 20px;
+            border: 1px solid var(--dark-light);
+            background-color: var(--dark-light);
+            color: var(--text-light);
+            font-size: 0.9rem;
+            resize: none;
+            height: 36px;
+            transition: var(--transition);
+        }
+        
+        .comment-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            background-color: var(--dark);
+            height: 60px;
+        }
+        
+        .comment {
+            display: flex;
+            gap: 0.8rem;
+            margin-bottom: 1rem;
+        }
+        
+        .comment-avatar {
+            width: 36px;
+            height: 36px;
+        }
+        
+        .comment-content {
+            flex: 1;
+        }
+        
+        .comment-header {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            margin-bottom: 0.2rem;
+            gap: 0.3rem;
+        }
+        
+        .comment-author {
+            font-weight: 600;
+            margin-right: 0.3rem;
+            font-size: 0.9rem;
+        }
+        
+        .comment-time {
+            font-size: 0.7rem;
+            color: var(--gray-dark);
+        }
+        
+        .comment-text {
+            margin-bottom: 0.3rem;
+            line-height: 1.4;
+            font-size: 0.9rem;
+        }
+        
+        .comment-actions {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+        
+        .comment-action {
+            display: flex;
+            align-items: center;
+            gap: 0.2rem;
+            color: var(--gray-dark);
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .comment-action:hover {
+            color: var(--text-light);
+        }
+        
+        .comment-replies {
+            margin-top: 0.8rem;
+            padding-left: 1rem;
+            border-left: 2px solid var(--dark-light);
+        }
+        
+        /* Upload Form */
         .upload-form-container {
             display: none;
             position: fixed;
@@ -576,58 +956,107 @@
             background-color: var(--dark);
             width: 100%;
             max-width: 500px;
-            border-radius: 12px;
-            padding: 1.5rem;
-            box-shadow: var(--shadow);
+            border-radius: var(--border-radius);
+            padding: 1rem;
+            box-shadow: var(--shadow-lg);
+            max-height: 90vh;
+            overflow-y: auto;
+            margin: 1rem;
         }
         
         .form-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 1.5rem;
+            margin-bottom: 1rem;
         }
         
         .form-title {
-            font-size: 1.3rem;
+            font-size: 1.2rem;
             font-weight: 600;
         }
         
         .close-form {
-            font-size: 1.5rem;
+            font-size: 1.3rem;
             cursor: pointer;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: var(--transition);
+        }
+        
+        .close-form:hover {
+            background-color: var(--dark-light);
         }
         
         .form-group {
-            margin-bottom: 1.2rem;
+            margin-bottom: 1rem;
         }
         
         .form-label {
             display: block;
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.4rem;
             font-weight: 500;
+            font-size: 0.9rem;
         }
         
         .form-input {
             width: 100%;
-            padding: 0.8rem;
-            border-radius: 8px;
-            border: 1px solid #333;
+            padding: 0.7rem;
+            border-radius: 6px;
+            border: 1px solid var(--dark-light);
             background-color: var(--dark-light);
             color: var(--text-light);
-            font-size: 1rem;
+            font-size: 0.9rem;
+            transition: var(--transition);
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            background-color: var(--dark);
+            box-shadow: 0 0 0 2px rgba(255, 62, 62, 0.2);
         }
         
         .form-textarea {
             width: 100%;
-            padding: 0.8rem;
-            border-radius: 8px;
-            border: 1px solid #333;
+            padding: 0.7rem;
+            border-radius: 6px;
+            border: 1px solid var(--dark-light);
             background-color: var(--dark-light);
             color: var(--text-light);
-            font-size: 1rem;
+            font-size: 0.9rem;
             resize: vertical;
-            min-height: 100px;
+            min-height: 80px;
+            transition: var(--transition);
+        }
+        
+        .form-textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            background-color: var(--dark);
+            box-shadow: 0 0 0 2px rgba(255, 62, 62, 0.2);
+        }
+        
+        .form-select {
+            width: 100%;
+            padding: 0.7rem;
+            border-radius: 6px;
+            border: 1px solid var(--dark-light);
+            background-color: var(--dark-light);
+            color: var(--text-light);
+            font-size: 0.9rem;
+            transition: var(--transition);
+        }
+        
+        .form-select:focus {
+            outline: none;
+            border-color: var(--primary);
+            background-color: var(--dark);
+            box-shadow: 0 0 0 2px rgba(255, 62, 62, 0.2);
         }
         
         .submit-btn {
@@ -637,12 +1066,18 @@
             color: white;
             border: none;
             border-radius: 8px;
-            font-size: 1rem;
+            font-size: 0.9rem;
             font-weight: 600;
             cursor: pointer;
-            margin-top: 1rem;
+            margin-top: 0.8rem;
+            transition: var(--transition);
         }
         
+        .submit-btn:hover {
+            background-color: var(--primary-dark);
+        }
+        
+        /* Download Modal */
         .download-modal {
             display: none;
             position: fixed;
@@ -659,74 +1094,90 @@
         .download-content {
             background-color: var(--dark);
             width: 100%;
-            max-width: 400px;
-            border-radius: 12px;
-            padding: 1.5rem;
-            box-shadow: var(--shadow);
+            max-width: 350px;
+            border-radius: var(--border-radius);
+            padding: 1rem;
+            box-shadow: var(--shadow-lg);
             text-align: center;
+            margin: 1rem;
         }
         
         .download-title {
-            font-size: 1.5rem;
+            font-size: 1.3rem;
             font-weight: 600;
-            margin-bottom: 1rem;
+            margin-bottom: 0.8rem;
         }
         
         .download-text {
-            margin-bottom: 1.5rem;
+            margin-bottom: 1rem;
             color: var(--gray-dark);
-        }
-        
-        .download-options {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-            margin-bottom: 1.5rem;
+            line-height: 1.4;
+            font-size: 0.9rem;
         }
         
         .download-btn {
             display: inline-block;
-            padding: 0.8rem 1.5rem;
+            padding: 0.8rem 1.2rem;
             background-color: var(--primary);
             color: white;
             border: none;
             border-radius: 8px;
-            font-size: 1rem;
+            font-size: 0.9rem;
             font-weight: 600;
             cursor: pointer;
             text-decoration: none;
-            width: 100%;
+            margin-bottom: 0.8rem;
+            transition: var(--transition);
         }
         
-        .download-btn.tv {
-            background-color: var(--dark-light);
+        .download-btn:hover {
+            background-color: var(--primary-dark);
         }
         
         .close-download {
             display: inline-block;
-            padding: 0.5rem 1rem;
+            padding: 0.5rem 0.8rem;
             background-color: var(--dark-light);
             color: var(--text-light);
             border: none;
             border-radius: 8px;
-            font-size: 0.9rem;
+            font-size: 0.8rem;
             cursor: pointer;
+            transition: var(--transition);
         }
         
+        .close-download:hover {
+            background-color: var(--dark-lighter);
+        }
+        
+        /* Notification */
         .notification {
             position: fixed;
             bottom: 1rem;
             left: 1rem;
             background-color: var(--primary);
             color: white;
-            padding: 1rem;
-            border-radius: 8px;
-            box-shadow: var(--shadow);
+            padding: 0.8rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-lg);
             z-index: 1000;
-            max-width: 300px;
+            max-width: calc(100% - 2rem);
             display: none;
+            animation: slideIn 0.3s ease-out;
         }
         
+        @keyframes slideIn {
+            from {
+                transform: translateY(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+        
+        /* Loading Spinner */
         .loading {
             display: none;
             position: fixed;
@@ -753,13 +1204,363 @@
             to { transform: rotate(360deg); }
         }
         
+        /* Settings Modal */
+        .settings-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.8);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .settings-content {
+            background-color: var(--dark);
+            width: 100%;
+            max-width: 800px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-lg);
+            max-height: 90vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            margin: 1rem;
+        }
+        
+        .settings-sidebar {
+            width: 100%;
+            background-color: var(--dark-light);
+            padding: 0.5rem 0;
+            border-bottom: 1px solid var(--dark-lighter);
+            display: flex;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+        
+        .settings-tab {
+            padding: 0.8rem 1rem;
+            cursor: pointer;
+            transition: var(--transition);
+            white-space: nowrap;
+        }
+        
+        .settings-tab:hover {
+            background-color: var(--dark-lighter);
+        }
+        
+        .settings-tab.active {
+            background-color: var(--dark);
+            border-bottom: 3px solid var(--primary);
+        }
+        
+        .settings-main {
+            flex: 1;
+            padding: 1rem;
+            overflow-y: auto;
+        }
+        
+        .settings-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding-bottom: 0.8rem;
+            border-bottom: 1px solid var(--dark-light);
+        }
+        
+        .settings-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+        
+        .close-settings {
+            font-size: 1.3rem;
+            cursor: pointer;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: var(--transition);
+        }
+        
+        .close-settings:hover {
+            background-color: var(--dark-light);
+        }
+        
+        .settings-section {
+            margin-bottom: 1.5rem;
+        }
+        
+        .section-title {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 0.8rem;
+            color: var(--text-light);
+        }
+        
+        .setting-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.7rem 0;
+            border-bottom: 1px solid var(--dark-light);
+        }
+        
+        .setting-label {
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+        
+        .setting-description {
+            font-size: 0.8rem;
+            color: var(--gray-dark);
+            margin-top: 0.2rem;
+        }
+        
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 24px;
+        }
+        
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: var(--dark-light);
+            transition: var(--transition);
+            border-radius: 34px;
+        }
+        
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: var(--transition);
+            border-radius: 50%;
+        }
+        
+        input:checked + .slider {
+            background-color: var(--primary);
+        }
+        
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+        
+        .select-theme {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+        
+        .theme-option {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: var(--transition);
+        }
+        
+        .theme-option:hover {
+            transform: scale(1.1);
+        }
+        
+        .theme-option.selected {
+            border-color: var(--primary);
+            transform: scale(1.1);
+        }
+        
+        /* Mini Player */
+        .mini-player {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 280px;
+            background-color: var(--dark-light);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-lg);
+            z-index: 999;
+            overflow: hidden;
+            transform: translateY(150%);
+            transition: var(--transition);
+            display: none;
+        }
+        
+        .mini-player.active {
+            transform: translateY(0);
+        }
+        
+        .mini-player-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem 0.8rem;
+            background-color: var(--dark);
+            border-bottom: 1px solid var(--dark-lighter);
+        }
+        
+        .mini-player-title {
+            font-weight: 500;
+            font-size: 0.8rem;
+        }
+        
+        .mini-player-close {
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+        
+        .mini-player-content {
+            padding: 0.8rem;
+        }
+        
+        .mini-player-video {
+            width: 100%;
+            aspect-ratio: 16/9;
+            background-color: black;
+            border-radius: 6px;
+            overflow: hidden;
+            margin-bottom: 0.5rem;
+        }
+        
+        .mini-player-video iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        
+        .mini-player-info {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .mini-player-channel {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background-color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 0.7rem;
+            flex-shrink: 0;
+        }
+        
+        .mini-player-video-title {
+            font-size: 0.8rem;
+            font-weight: 500;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .mini-player-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 0.5rem;
+            padding-top: 0.5rem;
+            border-top: 1px solid var(--dark-lighter);
+        }
+        
+        .mini-player-btn {
+            background: none;
+            border: none;
+            color: var(--text-light);
+            cursor: pointer;
+            font-size: 0.9rem;
+            padding: 0.3rem;
+            border-radius: 50%;
+            transition: var(--transition);
+        }
+        
+        .mini-player-btn:hover {
+            background-color: var(--dark);
+        }
+        
+        /* Mobile Menu Button */
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text-light);
+            font-size: 1.2rem;
+            margin-right: 0.5rem;
+            cursor: pointer;
+        }
+        
+        /* Responsive Styles */
+        @media (max-width: 1200px) {
+            .video-player-wrapper {
+                flex-direction: column;
+            }
+            
+            .video-player-sidebar {
+                width: 100%;
+            }
+        }
+        
+        @media (max-width: 992px) {
+            .sidebar {
+                transform: translateX(-100%);
+                z-index: 100;
+            }
+            
+            .sidebar.active {
+                transform: translateX(0);
+            }
+            
+            .main-content {
+                margin-left: 0;
+                width: 100%;
+            }
+            
+            .toggle-sidebar {
+                display: none;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+            }
+        }
+        
         @media (max-width: 768px) {
             .videos-grid {
-                grid-template-columns: 1fr;
+                grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+                gap: 0.8rem;
             }
             
             .video-actions {
-                gap: 1rem;
+                gap: 0.5rem;
+            }
+            
+            .video-actions-left, .video-actions-right {
+                width: 100%;
+                justify-content: space-between;
             }
             
             .search-container {
@@ -771,6 +1572,7 @@
                 padding: 0.5rem 1rem;
                 background-color: var(--dark);
                 z-index: 100;
+                box-shadow: var(--shadow);
             }
             
             .search-container.active {
@@ -780,17 +1582,255 @@
             .mobile-search-icon {
                 display: block;
             }
+            
+            .settings-content {
+                flex-direction: column;
+                max-height: 80vh;
+            }
+            
+            .settings-sidebar {
+                width: 100%;
+                display: flex;
+                overflow-x: auto;
+                padding: 0;
+                border-right: none;
+                border-bottom: 1px solid var(--dark-lighter);
+            }
+            
+            .settings-tab {
+                padding: 0.8rem 1rem;
+                white-space: nowrap;
+                border-bottom: 3px solid transparent;
+            }
+            
+            .settings-tab.active {
+                border-left: none;
+                border-bottom: 3px solid var(--primary);
+            }
+            
+            .related-video-thumbnail {
+                width: 100px;
+                height: 56px;
+            }
+            
+            .mini-player {
+                width: 250px;
+                right: 10px;
+                bottom: 10px;
+            }
+            
+            .logo h1 {
+                font-size: 1.1rem;
+            }
+            
+            .logo-icon {
+                width: 24px;
+                height: 24px;
+                font-size: 0.9rem;
+            }
+            
+            .user-actions {
+                gap: 0.3rem;
+            }
+            
+            .action-icon {
+                width: 32px;
+                height: 32px;
+                font-size: 1rem;
+            }
+            
+            .user-avatar {
+                width: 28px;
+                height: 28px;
+                font-size: 0.8rem;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .videos-grid {
+                grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+                gap: 0.6rem;
+            }
+            
+            .video-title {
+                font-size: 0.8rem;
+            }
+            
+            .channel-name, .video-stats {
+                font-size: 0.7rem;
+            }
+            
+            .channel-icon {
+                width: 30px;
+                height: 30px;
+                font-size: 0.8rem;
+            }
+            
+            .video-player-title {
+                font-size: 1rem;
+            }
+            
+            .action-button {
+                font-size: 0.8rem;
+                padding: 0.3rem 0.5rem;
+            }
+            
+            .action-button i {
+                font-size: 0.9rem;
+            }
+            
+            .channel-avatar {
+                width: 40px;
+                height: 40px;
+                font-size: 0.9rem;
+            }
+            
+            .video-description {
+                font-size: 0.8rem;
+                padding: 0.8rem;
+            }
+            
+            .mini-player {
+                width: 90%;
+                right: 5%;
+                bottom: 10px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .videos-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .video-card {
+                display: flex;
+                flex-direction: column;
+            }
+            
+            .thumbnail-container {
+                width: 100%;
+                padding-bottom: 56.25%;
+            }
+            
+            .video-info {
+                margin-top: 0.5rem;
+            }
+            
+            .related-video-thumbnail {
+                width: 80px;
+                height: 45px;
+            }
+            
+            .related-video-title {
+                font-size: 0.8rem;
+            }
+            
+            .related-video-channel, .related-video-stats {
+                font-size: 0.7rem;
+            }
         }
         
         @media (min-width: 769px) {
             .mobile-search-icon {
                 display: none;
             }
+            
+            .mobile-menu-btn {
+                display: none;
+            }
+        }
+        
+        /* Preloader Styles */
+        .preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--dark);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease;
+        }
+        
+        .preloader-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .preloader-icon {
+            width: 36px;
+            height: 36px;
+            background-color: var(--primary);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 18px;
+        }
+        
+        .preloader-title {
+            font-size: 20px;
+            font-weight: 700;
+            background: linear-gradient(to right, var(--primary), var(--primary-light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .preloader-bar {
+            width: 250px;
+            height: 4px;
+            background-color: var(--dark-light);
+            border-radius: 2px;
+            overflow: hidden;
+            margin-bottom: 15px;
+        }
+        
+        .preloader-progress {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(to right, var(--primary), var(--primary-light));
+            transition: width 0.3s ease;
+        }
+        
+        .preloader-text {
+            color: var(--gray-dark);
+            font-size: 12px;
+            margin-bottom: 20px;
+        }
+        
+        .preloader-animation {
+            display: flex;
+            gap: 6px;
+        }
+        
+        .preloader-dot {
+            width: 10px;
+            height: 10px;
+            background-color: var(--primary);
+            border-radius: 50%;
+            animation: bounce 1.4s infinite ease-in-out;
+        }
+        
+        .preloader-dot:nth-child(1) { animation-delay: 0s; }
+        .preloader-dot:nth-child(2) { animation-delay: 0.2s; }
+        .preloader-dot:nth-child(3) { animation-delay: 0.4s; }
+        
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); opacity: 0.6; }
+            50% { transform: translateY(-8px); opacity: 1; }
         }
     </style>
 </head>
 <body>
-    <!-- YENİ EKLENEN YÜKLEME EKRANI -->
+    <!-- Preloader -->
     <div class="preloader" id="preloader">
         <div class="preloader-logo">
             <div class="preloader-icon">M</div>
@@ -807,89 +1847,320 @@
         </div>
     </div>
 
-    <!-- ORİJİNAL İÇERİK -->
-    <header>
-        <div class="logo">
-            <div class="logo-icon">M</div>
-            <h1>Mixyup</h1>
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <div class="toggle-sidebar" id="toggleSidebar">
+            <i class="fas fa-chevron-left"></i>
         </div>
         
-        <div class="search-container" id="searchContainer">
-            <input type="text" class="search-input" id="searchInput" placeholder="Ara...">
-            <div class="search-icon" id="searchIcon">🔍</div>
-            <div class="search-results" id="searchResults"></div>
+        <div class="sidebar-item active" data-section="home">
+            <i class="fas fa-home"></i>
+            <span>Ana Sayfa</span>
         </div>
         
-        <div class="user-actions">
-            <div class="action-icon mobile-search-icon" id="mobileSearchBtn">🔍</div>
-            <div class="action-icon" id="downloadAppBtn" title="Uygulamayı İndir">📱</div>
-            <div class="action-icon" id="uploadBtn">📤</div>
-            <div class="action-icon" id="notificationsBtn">🔔</div>
-        </div>
-    </header>
-    
-    <div class="container">
-        <div class="category-chips">
-            <button class="category-chip active" data-category="all">Tümü</button>
-            <button class="category-chip" data-category="film">Film</button>
-            <button class="category-chip" data-category="music">Müzik</button>
-            <button class="category-chip" data-category="tech">Teknoloji</button>
-            <button class="category-chip" data-category="education">Eğitim</button>
-            <button class="category-chip" data-category="entertainment">Eğlence</button>
+        <div class="sidebar-item" data-section="explore">
+            <i class="fas fa-compass"></i>
+            <span>Keşfet</span>
         </div>
         
-        <div class="videos-grid" id="videosGrid">
-            <!-- Videos will be loaded here -->
+        <div class="sidebar-item" data-section="subscriptions">
+            <i class="fas fa-bookmark"></i>
+            <span>Abonelikler</span>
+        </div>
+        
+        <div class="sidebar-item" data-section="library">
+            <i class="fas fa-folder"></i>
+            <span>Kitaplık</span>
+        </div>
+        
+        <div class="sidebar-item" data-section="history">
+            <i class="fas fa-history"></i>
+            <span>Geçmiş</span>
+        </div>
+        
+        <div class="sidebar-divider"></div>
+        
+        <div class="sidebar-title">Abonelikler</div>
+        
+        <div class="sidebar-item" data-channel="Mixyup">
+            <div class="channel-icon">M</div>
+            <span>Mixyup</span>
+        </div>
+        
+        <div class="sidebar-item" data-channel="YouTube Audio Library">
+            <div class="channel-icon">Y</div>
+            <span>YouTube Audio</span>
+        </div>
+        
+        <div class="sidebar-item" data-channel="MrBeast">
+            <div class="channel-icon">M</div>
+            <span>MrBeast</span>
+        </div>
+        
+        <div class="sidebar-footer">
+            © 2023 Mixyup
         </div>
     </div>
-    
-    <div class="video-player-container" id="videoPlayerPage">
-        <div class="video-player">
-            <iframe id="youtubePlayer" frameborder="0" allowfullscreen></iframe>
-        </div>
-        
-        <div class="video-info-container">
-            <h1 class="video-player-title" id="videoPlayerTitle"></h1>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Header -->
+        <header>
+            <button class="mobile-menu-btn" id="mobileMenuBtn">
+                <i class="fas fa-bars"></i>
+            </button>
             
-            <div class="video-actions">
-                <button class="action-button" id="likeBtn">
-                    <span>👍</span>
-                    <span id="likeCount">0</span>
-                </button>
-                <button class="action-button" id="dislikeBtn">
-                    <span>👎</span>
-                    <span id="dislikeCount">0</span>
-                </button>
-                <button class="action-button" id="shareBtn">
-                    <span>↗️</span>
-                    <span>Paylaş</span>
-                </button>
-                <button class="action-button" id="saveBtn">
-                    <span>➕</span>
-                    <span>Kaydet</span>
-                </button>
+            <div class="logo">
+                <div class="logo-icon">M</div>
+                <h1>Mixyup</h1>
             </div>
             
-            <div class="channel-info">
-                <div class="channel-details" id="channelDetails">
-                    <div class="channel-avatar" id="channelAvatar"></div>
-                    <div class="channel-meta">
-                        <div class="channel-name" id="channelName"></div>
-                        <div class="subscriber-count" id="subscriberCount"></div>
+            <div class="search-container" id="searchContainer">
+                <input type="text" class="search-input" id="searchInput" placeholder="Ara...">
+                <div class="search-icon" id="searchIcon"><i class="fas fa-search"></i></div>
+                <div class="search-results" id="searchResults"></div>
+            </div>
+            
+            <div class="user-actions">
+                <div class="action-icon mobile-search-icon" id="mobileSearchBtn">
+                    <i class="fas fa-search"></i>
+                </div>
+                <div class="action-icon" id="miniPlayerBtn" title="Mini Oynatıcı">
+                    <i class="fas fa-window-minimize"></i>
+                </div>
+                <div class="action-icon" id="downloadAppBtn" title="Uygulamayı İndir">
+                    <i class="fas fa-mobile-alt"></i>
+                </div>
+                <div class="action-icon" id="uploadBtn" title="Video Yükle">
+                    <i class="fas fa-upload"></i>
+                </div>
+                <div class="action-icon" id="notificationsBtn" title="Bildirimler">
+                    <i class="fas fa-bell"></i>
+                </div>
+                <div class="action-icon" id="settingsBtn" title="Ayarlar">
+                    <i class="fas fa-cog"></i>
+                </div>
+                <div class="user-avatar" id="userAvatar">U</div>
+            </div>
+        </header>
+        
+        <!-- Main Container -->
+        <div class="container" id="mainContainer">
+            <div class="category-chips">
+                <button class="category-chip active" data-category="all">Tümü</button>
+                <button class="category-chip" data-category="film">Film</button>
+                <button class="category-chip" data-category="music">Müzik</button>
+                <button class="category-chip" data-category="tech">Teknoloji</button>
+                <button class="category-chip" data-category="education">Eğitim</button>
+                <button class="category-chip" data-category="entertainment">Eğlence</button>
+                <button class="category-chip" data-category="animation">Animasyon</button>
+                <button class="category-chip" data-category="short-film">Kısa Film</button>
+            </div>
+            
+            <div class="videos-grid" id="videosGrid">
+                <!-- Videos will be loaded here -->
+            </div>
+        </div>
+        
+        <!-- Video Player Page -->
+        <div class="video-player-container" id="videoPlayerPage">
+            <div class="video-player-wrapper">
+                <div class="video-player-main">
+                    <div class="video-player">
+                        <iframe id="youtubePlayer" frameborder="0" allowfullscreen></iframe>
+                    </div>
+                    
+                    <div class="video-info-container">
+                        <h1 class="video-player-title" id="videoPlayerTitle"></h1>
+                        
+                        <div class="video-actions">
+                            <div class="video-actions-left">
+                                <button class="action-button" id="likeBtn">
+                                    <i class="fas fa-thumbs-up"></i>
+                                    <span id="likeCount">0</span>
+                                </button>
+                                <button class="action-button" id="dislikeBtn">
+                                    <i class="fas fa-thumbs-down"></i>
+                                    <span id="dislikeCount">0</span>
+                                </button>
+                                <button class="action-button" id="shareBtn">
+                                    <i class="fas fa-share"></i>
+                                    <span>Paylaş</span>
+                                </button>
+                            </div>
+                            <div class="video-actions-right">
+                                <button class="action-button" id="saveBtn">
+                                    <i class="fas fa-bookmark"></i>
+                                    <span>Kaydet</span>
+                                </button>
+                                <button class="action-button" id="miniPlayerTrigger">
+                                    <i class="fas fa-window-minimize"></i>
+                                    <span>Mini Oynatıcı</span>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="channel-info">
+                            <div class="channel-details" id="channelDetails">
+                                <div class="channel-avatar" id="channelAvatar"></div>
+                                <div class="channel-meta">
+                                    <div class="channel-name" id="channelName"></div>
+                                    <div class="subscriber-count" id="subscriberCount"></div>
+                                </div>
+                            </div>
+                            <button class="subscribe-btn" id="subscribeBtn">Takip Et</button>
+                        </div>
+                        
+                        <div class="video-description" id="videoDescription"></div>
+                        <div class="description-collapse" id="descriptionCollapse">Daha fazla göster</div>
+                        
+                        <!-- Comments Section -->
+                        <div class="comments-section">
+                            <div class="comments-header">
+                                <div class="comments-count">234 Yorum</div>
+                                <div class="comments-sort">
+                                    <span>Sırala:</span>
+                                    <select class="form-select" style="width: auto; padding: 0.2rem 0.5rem; font-size: 0.9rem;">
+                                        <option>En çok beğenilen</option>
+                                        <option>En yeni</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="comment-form">
+                                <div class="comment-avatar">U</div>
+                                <textarea class="comment-input" placeholder="Yorum ekle..."></textarea>
+                            </div>
+                            
+                            <div class="comment">
+                                <div class="comment-avatar">A</div>
+                                <div class="comment-content">
+                                    <div class="comment-header">
+                                        <div class="comment-author">Ahmet Yılmaz</div>
+                                        <div class="comment-time">2 gün önce</div>
+                                    </div>
+                                    <div class="comment-text">
+                                        Harika bir video olmuş, çok beğendim. Devamını bekliyoruz!
+                                    </div>
+                                    <div class="comment-actions">
+                                        <div class="comment-action">
+                                            <i class="fas fa-thumbs-up"></i>
+                                            <span>124</span>
+                                        </div>
+                                        <div class="comment-action">
+                                            <i class="fas fa-thumbs-down"></i>
+                                        </div>
+                                        <div class="comment-action">
+                                            Yanıtla
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="comment">
+                                <div class="comment-avatar">E</div>
+                                <div class="comment-content">
+                                    <div class="comment-header">
+                                        <div class="comment-author">Elif Kaya</div>
+                                        <div class="comment-time">1 hafta önce</div>
+                                    </div>
+                                    <div class="comment-text">
+                                        Çok faydalı bilgiler içeriyor, teşekkürler.
+                                    </div>
+                                    <div class="comment-actions">
+                                        <div class="comment-action">
+                                            <i class="fas fa-thumbs-up"></i>
+                                            <span>56</span>
+                                        </div>
+                                        <div class="comment-action">
+                                            <i class="fas fa-thumbs-down"></i>
+                                        </div>
+                                        <div class="comment-action">
+                                            Yanıtla
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="comment-replies">
+                                        <div class="comment">
+                                            <div class="comment-avatar">C</div>
+                                            <div class="comment-content">
+                                                <div class="comment-header">
+                                                    <div class="comment-author">Can Demir</div>
+                                                    <div class="comment-time">3 gün önce</div>
+                                                </div>
+                                                <div class="comment-text">
+                                                    Katılıyorum, gerçekten çok bilgilendirici.
+                                                </div>
+                                                <div class="comment-actions">
+                                                    <div class="comment-action">
+                                                        <i class="fas fa-thumbs-up"></i>
+                                                        <span>12</span>
+                                                    </div>
+                                                    <div class="comment-action">
+                                                        <i class="fas fa-thumbs-down"></i>
+                                                    </div>
+                                                    <div class="comment-action">
+                                                        Yanıtla
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <button class="subscribe-btn" id="subscribeBtn">Takip Et</button>
+                
+                <div class="video-player-sidebar">
+                    <h3 class="section-title">İlgili Videolar</h3>
+                    <div class="related-videos" id="relatedVideos">
+                        <!-- Related videos will be loaded here -->
+                    </div>
+                </div>
             </div>
-            
-            <div class="video-description" id="videoDescription"></div>
         </div>
     </div>
     
+    <!-- Mini Player -->
+    <div class="mini-player" id="miniPlayer">
+        <div class="mini-player-header">
+            <div class="mini-player-title">Şu anda oynatılıyor</div>
+            <div class="mini-player-close" id="miniPlayerClose">
+                <i class="fas fa-times"></i>
+            </div>
+        </div>
+        <div class="mini-player-content">
+            <div class="mini-player-video" id="miniPlayerVideo"></div>
+            <div class="mini-player-info">
+                <div class="mini-player-channel" id="miniPlayerChannel"></div>
+                <div class="mini-player-video-title" id="miniPlayerTitle"></div>
+            </div>
+            <div class="mini-player-controls">
+                <button class="mini-player-btn" id="miniPlayerPlay">
+                    <i class="fas fa-play"></i>
+                </button>
+                <button class="mini-player-btn" id="miniPlayerMute">
+                    <i class="fas fa-volume-up"></i>
+                </button>
+                <button class="mini-player-btn" id="miniPlayerExpand">
+                    <i class="fas fa-expand"></i>
+                </button>
+                <button class="mini-player-btn" id="miniPlayerCloseBtn">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Upload Form -->
     <div class="upload-form-container" id="uploadFormContainer">
         <div class="upload-form">
             <div class="form-header">
                 <div class="form-title">Kanal Oluştur ve Video Paylaş</div>
-                <div class="close-form" id="closeUploadForm">&times;</div>
+                <div class="close-form" id="closeUploadForm">
+                    <i class="fas fa-times"></i>
+                </div>
             </div>
             
             <form id="uploadForm">
@@ -905,17 +2176,25 @@
                 
                 <div class="form-group">
                     <label for="videoDescription" class="form-label">Açıklama</label>
-                    <textarea id="videoDescription" class="form-textarea" placeholder="Video açıklamasını girin"></textarea>
+                    <textarea id="videoDescriptionForm" class="form-textarea" placeholder="Video açıklamasını girin"></textarea>
                 </div>
                 
                 <div class="form-group">
                     <label for="videoCategory" class="form-label">Kategori</label>
-                    <select id="videoCategory" class="form-input" required>
+                    <select id="videoCategory" class="form-select" required>
                         <option value="music">Müzik</option>
                         <option value="tech">Teknoloji</option>
                         <option value="education">Eğitim</option>
                         <option value="entertainment">Eğlence</option>
+                        <option value="film">Film</option>
+                        <option value="animation">Animasyon</option>
+                        <option value="short-film">Kısa Film</option>
                     </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="videoThumbnail" class="form-label">Özel Thumbnail (Opsiyonel)</label>
+                    <input type="file" id="videoThumbnail" class="form-input" accept="image/*">
                 </div>
                 
                 <button type="submit" class="submit-btn">Gönder</button>
@@ -923,67 +2202,347 @@
         </div>
     </div>
     
+    <!-- Download Modal -->
     <div class="download-modal" id="downloadModal">
         <div class="download-content">
-            <h2 class="download-title">Mixyup Uygulamalarını İndir</h2>
-            <p class="download-text">Mixyup'un tüm özelliklerine mobil ve TV cihazlarınızdan erişmek için uygulamaları indirin.</p>
-            
-            <div class="download-options">
-                <a href="https://github.com/yazalim-silelim/Mixyup/releases/download/Mixyup_V1/MixyupV1.apk" class="download-btn">Mobil Uygulama (Android)</a>
-                <a href="https://github.com/yazalim-silelim/MixyupTV/releases/download/MixyupTV_V1/MixyupTV.apk" class="download-btn tv">TV Uygulaması (Android TV)</a>
-            </div>
-            
+            <h2 class="download-title">Mixyup Uygulamasını İndir</h2>
+            <p class="download-text">Mixyup'un tüm özelliklerine mobil cihazınızdan erişmek için uygulamayı indirin. Uygulama ile videolarınızı izlerken bildirim alabilir, offline izleyebilir ve daha birçok özellikten faydalanabilirsiniz.</p>
+            <a href="https://github.com/yazalim-silelim/Mixyup/releases/download/Mixyup_V1/MixyupV1.apk" class="download-btn">Uygulamayı İndir</a>
+            <p class="download-text" style="font-size: 0.8rem;">APK boyutu: 12.4 MB</p>
             <button class="close-download" id="closeDownload">Kapat</button>
         </div>
     </div>
     
+    <!-- Settings Modal -->
+    <div class="settings-modal" id="settingsModal">
+        <div class="settings-content">
+            <div class="settings-sidebar">
+                <div class="settings-tab active" data-tab="general">Genel</div>
+                <div class="settings-tab" data-tab="playback">Oynatma</div>
+                <div class="settings-tab" data-tab="privacy">Gizlilik</div>
+                <div class="settings-tab" data-tab="notifications">Bildirimler</div>
+                <div class="settings-tab" data-tab="account">Hesap</div>
+            </div>
+            
+            <div class="settings-main">
+                <div class="settings-header">
+                    <div class="settings-title">Ayarlar</div>
+                    <div class="close-settings" id="closeSettings">
+                        <i class="fas fa-times"></i>
+                    </div>
+                </div>
+                
+                <!-- General Settings -->
+                <div class="settings-section" data-tab-content="general">
+                    <div class="section-title">Görünüm</div>
+                    
+                    <div class="setting-item">
+                        <div>
+                            <div class="setting-label">Koyu Tema</div>
+                            <div class="setting-description">Uygulamanın koyu temada görünmesini sağlar</div>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" id="darkModeToggle" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    
+                    <div class="setting-item">
+                        <div>
+                            <div class="setting-label">Tema Rengi</div>
+                            <div class="setting-description">Uygulamanın ana rengini seçin</div>
+                        </div>
+                        <div class="select-theme">
+                            <div class="theme-option selected" style="background-color: #FF3E3E;" data-color="#FF3E3E"></div>
+                            <div class="theme-option" style="background-color: #3EA6FF;" data-color="#3EA6FF"></div>
+                            <div class="theme-option" style="background-color: #00C853;" data-color="#00C853"></div>
+                            <div class="theme-option" style="background-color: #FFC107;" data-color="#FFC107"></div>
+                            <div class="theme-option" style="background-color: #9C27B0;" data-color="#9C27B0"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="setting-item">
+                        <div>
+                            <div class="setting-label">Dil</div>
+                            <div class="setting-description">Uygulamanın dilini seçin</div>
+                        </div>
+                        <select class="form-select" style="width: auto;">
+                            <option>Türkçe</option>
+                            <option>English</option>
+                            <option>Deutsch</option>
+                            <option>Français</option>
+                        </select>
+                    </div>
+                    
+                    <div class="section-title">Kullanıcı Arayüzü</div>
+                    
+                    <div class="setting-item">
+                        <div>
+                            <div class="setting-label">Yan Menüyü Küçült</div>
+                            <div class="setting-description">Yan menüyü küçük boyutta gösterir</div>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" id="compactSidebarToggle">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    
+                    <div class="setting-item">
+                        <div>
+                            <div class="setting-label">Video Kısayolları</div>
+                            <div class="setting-description">Video oynatıcıda klavye kısayollarını etkinleştirir</div>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" id="keyboardShortcutsToggle" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                </div>
+                
+                <!-- Playback Settings -->
+                <div class="settings-section" data-tab-content="playback" style="display: none;">
+                    <div class="section-title">Video Oynatma</div>
+                    
+                    <div class="setting-item">
+                        <div>
+                            <div class="setting-label">Otomatik Oynatma</div>
+                            <div class="setting-description">Bir video bittiğinde otomatik olarak bir sonraki videoyu oynatır</div>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" id="autoplayToggle" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    
+                    <div class="setting-item">
+                        <div>
+                            <div class="setting-label">HD Kalitesinde Oynat</div>
+                            <div class="setting-description">Mümkün olduğunda videoları yüksek kalitede oynatır</div>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" id="hdQualityToggle" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    
+                    <div class="setting-item">
+                        <div>
+                            <div class="setting-label">Mini Oynatıcı</div>
+                            <div class="setting-description">Sayfadan ayrılırken videoyu mini oynatıcıda devam ettirir</div>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" id="miniPlayerToggle" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    
+                    <div class="section-title">Ses Ayarları</div>
+                    
+                    <div class="setting-item">
+                        <div>
+                            <div class="setting-label">Varsayılan Ses Seviyesi</div>
+                            <div class="setting-description">Videoların başlangıç ses seviyesini ayarlar</div>
+                        </div>
+                        <input type="range" min="0" max="100" value="50" class="form-input" style="width: 120px; padding: 0;">
+                    </div>
+                </div>
+                
+                <!-- Privacy Settings -->
+                <div class="settings-section" data-tab-content="privacy" style="display: none;">
+                    <div class="section-title">Gizlilik Ayarları</div>
+                    
+                    <div class="setting-item">
+                        <div>
+                            <div class="setting-label">İzleme Geçmişi</div>
+                            <div class="setting-description">İzlediğiniz videoların kaydını tutar</div>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" id="watchHistoryToggle" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    
+                    <div class="setting-item">
+                        <div>
+                            <div class="setting-label">Arama Geçmişi</div>
+                            <div class="setting-description">Yaptığınız aramaların kaydını tutar</div>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" id="searchHistoryToggle" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    
+                    <div class="setting-item">
+                        <div>
+                            <div class="setting-label">Kişiselleştirilmiş Reklamlar</div>
+                            <div class="setting-description">İlgi alanlarınıza göre reklamlar gösterir</div>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" id="personalizedAdsToggle" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    
+                    <div class="section-title">Veri Yönetimi</div>
+                    
+                    <button class="submit-btn" style="margin-top: 1rem; background-color: var(--dark-light);" id="clearHistoryBtn">
+                        Geçmişi Temizle
+                    </button>
+                    
+                    <button class="submit-btn" style="margin-top: 1rem; background-color: var(--dark-light);" id="exportDataBtn">
+                        Verileri Dışa Aktar
+                    </button>
+                </div>
+                
+                <!-- Notifications Settings -->
+                <div class="settings-section" data-tab-content="notifications" style="display: none;">
+                    <div class="section-title">Bildirim Ayarları</div>
+                    
+                    <div class="setting-item">
+                        <div>
+                            <div class="setting-label">Bildirimler</div>
+                            <div class="setting-description">Tüm bildirimleri etkinleştir veya devre dışı bırak</div>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" id="notificationsToggle" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    
+                    <div class="section-title">Bildirim Türleri</div>
+                    
+                    <div class="setting-item">
+                        <div>
+                            <div class="setting-label">Abonelik Bildirimleri</div>
+                            <div class="setting-description">Takip ettiğiniz kanallardan yeni video yüklendiğinde bildirim alın</div>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" id="subscriptionNotificationsToggle" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    
+                    <div class="setting-item">
+                        <div>
+                            <div class="setting-label">Öneri Bildirimleri</div>
+                            <div class="setting-description">İlginizi çekebilecek videolar hakkında bildirim alın</div>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" id="recommendationNotificationsToggle" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    
+                    <div class="setting-item">
+                        <div>
+                            <div class="setting-label">Yorum Bildirimleri</div>
+                            <div class="setting-description">Videolarınıza yapılan yorumlar hakkında bildirim alın</div>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" id="commentNotificationsToggle" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                </div>
+                
+                <!-- Account Settings -->
+                <div class="settings-section" data-tab-content="account" style="display: none;">
+                    <div class="section-title">Hesap Bilgileri</div>
+                    
+                    <div class="setting-item">
+                        <div>
+                            <div class="setting-label">Kullanıcı Adı</div>
+                            <div class="setting-description">user123</div>
+                        </div>
+                        <button class="submit-btn" style="padding: 0.4rem 0.8rem; font-size: 0.9rem;">
+                            Değiştir
+                        </button>
+                    </div>
+                    
+                    <div class="setting-item">
+                        <div>
+                            <div class="setting-label">E-posta</div>
+                            <div class="setting-description">user@example.com</div>
+                        </div>
+                        <button class="submit-btn" style="padding: 0.4rem 0.8rem; font-size: 0.9rem;">
+                            Değiştir
+                        </button>
+                    </div>
+                    
+                    <div class="setting-item">
+                        <div>
+                            <div class="setting-label">Şifre</div>
+                            <div class="setting-description">********</div>
+                        </div>
+                        <button class="submit-btn" style="padding: 0.4rem 0.8rem; font-size: 0.9rem;">
+                            Değiştir
+                        </button>
+                    </div>
+                    
+                    <div class="section-title">Hesap İşlemleri</div>
+                    
+                    <button class="submit-btn" style="margin-top: 1rem; background-color: var(--dark-light);" id="deleteAccountBtn">
+                        Hesabı Sil
+                    </button>
+                    
+                    <button class="submit-btn" style="margin-top: 1rem; background-color: var(--primary-dark);" id="logoutBtn">
+                        Çıkış Yap
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Notification -->
     <div class="notification" id="notification">
         <div id="notificationText"></div>
     </div>
     
+    <!-- Loading Spinner -->
     <div class="loading" id="loading">
         <div class="spinner"></div>
     </div>
     
     <script>
-        // YÜKLEME EKRANI KODU
+        // Preloader
         document.addEventListener('DOMContentLoaded', function() {
-    const preloader = document.getElementById('preloader');
-    const progressBar = document.getElementById('preloaderProgress');
-    const statusText = document.getElementById('preloaderText');
-    
-    const messages = [
-        "Video veritabanı yükleniyor...",
-        "Kişiselleştirilmiş öneriler hazırlanıyor...",
-        "Hazır!"
-    ];
-    
-    let progress = 0;
-    let currentMessage = 0;
-    
-    const interval = setInterval(() => {
-        progress += Math.random() * 30 + 10; // Daha hızlı ilerleme
-        if (progress > 100) progress = 100;
-        progressBar.style.width = progress + '%';
-        
-        if (progress > (currentMessage + 1) * 30 && currentMessage < messages.length - 1) {
-            currentMessage++;
-            statusText.textContent = messages[currentMessage];
-        }
-        
-        if (progress >= 100) {
-            clearInterval(interval);
-            setTimeout(() => {
-                preloader.style.opacity = '0';
-                setTimeout(() => {
-                    preloader.style.display = 'none';
-                }, 300); // Daha kısa geçiş süresi
-            }, 300);
-        }
-    }, 150); // Daha sık güncelleme (150ms)
-});
+            const preloader = document.getElementById('preloader');
+            const progressBar = document.getElementById('preloaderProgress');
+            const statusText = document.getElementById('preloaderText');
+            
+            const messages = [
+                "Video veritabanı yükleniyor...",
+                "Kişiselleştirilmiş öneriler hazırlanıyor...",
+                "Hazır!"
+            ];
+            
+            let progress = 0;
+            let currentMessage = 0;
+            
+            const interval = setInterval(() => {
+                progress += Math.random() * 30 + 10;
+                if (progress > 100) progress = 100;
+                progressBar.style.width = progress + '%';
+                
+                if (progress > (currentMessage + 1) * 30 && currentMessage < messages.length - 1) {
+                    currentMessage++;
+                    statusText.textContent = messages[currentMessage];
+                }
+                
+                if (progress >= 100) {
+                    clearInterval(interval);
+                    setTimeout(() => {
+                        preloader.style.opacity = '0';
+                        setTimeout(() => {
+                            preloader.style.display = 'none';
+                        }, 300);
+                    }, 300);
+                }
+            }, 150);
+        });
 
-        // ORİJİNAL KOD
+        // Video Data
         const videos = [
             {
                 id: "pjbNlFMolqU",
@@ -1068,7 +2627,7 @@
                 channel: "Unknown",
                 subscribers: "–– abone",
                 description: "Yeni ve etkileyici dramatik kısa film.",
-                category: "short film",
+                category: "short-film",
                 duration: "12:23",
                 views: "––",
                 uploadDate: "5 ay önce"
@@ -1101,7 +2660,7 @@
                 channel: "Aemilia Widodo",
                 subscribers: "50K abone",
                 description: "Creative Commons lisanslı, çocuklar için animasyonlu kısa film.",
-                category: "film",
+                category: "animation",
                 duration: "02:28",
                 views: "200K görüntüleme",
                 uploadDate: "4.4 yıl önce"
@@ -1134,7 +2693,7 @@
                 channel: "ShortsGenius",
                 subscribers: "200K abone",
                 description: "Creative Commons videolarla yapabileceğin viral Shorts fikirleri.",
-                category: "inspiration",
+                category: "education",
                 duration: "19:10",
                 views: "250K görüntüleme",
                 uploadDate: "1.4 yıl önce"
@@ -1145,7 +2704,7 @@
                 channel: "Blender Animation Studio",
                 subscribers: "200K+ abone",
                 description: "Blender tarafından hazırlanmış kısa animasyon; Creative Commons lisanslı.",
-                category: "film",
+                category: "animation",
                 duration: "07:46",
                 views: "50K+ görüntüleme",
                 uploadDate: "5.2 yıl önce"
@@ -1156,7 +2715,7 @@
                 channel: "Context Türkçe",
                 subscribers: "71K abone",
                 description: "Kısa film 'BANK', CC BY 4.0 lisansıyla paylaşılmıştır.",
-                category: "film",
+                category: "short-film",
                 duration: "7:50",
                 views: "71K görüntüleme",
                 uploadDate: "4.7 yıl önce"
@@ -1167,7 +2726,7 @@
                 channel: "BİR PAKET MERHAMET",
                 subscribers: "– abone",
                 description: "Ödüllü Türk kısa filmi, telif ücretsiz paylaşılmış.",
-                category: "film",
+                category: "short-film",
                 duration: "11:15",
                 views: "50K+ görüntüleme",
                 uploadDate: "8.4 yıl önce"
@@ -1178,7 +2737,7 @@
                 channel: "BBC News Türkçe",
                 subscribers: "455K abone",
                 description: "Koronavirüs günlerinde İstanbul'da geçen kısa film; CC BY 3.0 lisanslı.",
-                category: "film",
+                category: "short-film",
                 duration: "04:40",
                 views: "455K görüntüleme",
                 uploadDate: "5.3 yıl önce"
@@ -1228,7 +2787,7 @@
                 uploadDate: "2 ay önce"
             },
             {
-            id: "xkvPYv5OcvQ",
+                id: "xkvPYv5OcvQ",
                 title: "Hayat Kurtaran Yaz Yemekleri ☀️🏖🥙",
                 channel: "Yemek.com",
                 subscribers: "2,26M abone",
@@ -1239,7 +2798,7 @@
                 uploadDate: "1 yıl önce"
             },
             {
-            id: "7Civt2GT6VM",
+                id: "7Civt2GT6VM",
                 title: "MEKSİKA'da İLK GÜN NELER YAŞANDI?",
                 channel: "Japon Hamza",
                 subscribers: "723B abone",
@@ -1250,7 +2809,7 @@
                 uploadDate: "1 gün önce"
             },
             {
-            id: "bl1qV561akI",
+                id: "bl1qV561akI",
                 title: "Devasa Amerika Market Turu",
                 channel: "Noluyo ya¿",
                 subscribers: "6,05M abone",
@@ -1261,7 +2820,7 @@
                 uploadDate: "2 önce"
             },
             {
-            id: "mQ0_xxKaEp8",
+                id: "mQ0_xxKaEp8",
                 title: "Melike Şahin - Beni Ancak (Official Music Video)",
                 channel: "Melike şahin",
                 subscribers: "780K abone",
@@ -1272,7 +2831,7 @@
                 uploadDate: "3 hafta önce"
             },
             {
-            id: "BLtlOHpXogA",
+                id: "BLtlOHpXogA",
                 title: "Salman Tin & Oğuzhan Koç - Eylül",
                 channel: "Salman Tin",
                 subscribers: "11,4K abone",
@@ -1290,13 +2849,34 @@
                 subscribers: "1.2M abone",
                 description: "Teknoloji ve yazılım içerikleri",
                 avatar: "M"
+            },
+            {
+                name: "YouTube Audio Library",
+                subscribers: "–– abone",
+                description: "Telifsiz müzik ve ses efektleri",
+                avatar: "Y"
+            },
+            {
+                name: "MrBeast",
+                subscribers: "20M abone",
+                description: "Eğlenceli içerikler ve bağışlar",
+                avatar: "M"
             }
         ];
         
+        // App State
         let currentVideo = null;
         let currentCategory = "all";
         let searchQuery = "";
+        let isSidebarCollapsed = false;
+        let isDarkMode = true;
+        let primaryColor = "#FF3E3E";
+        let miniPlayerActive = false;
         
+        // DOM Elements
+        const sidebar = document.getElementById('sidebar');
+        const toggleSidebar = document.getElementById('toggleSidebar');
+        const mainContainer = document.getElementById('mainContainer');
         const videosGrid = document.getElementById('videosGrid');
         const videoPlayerPage = document.getElementById('videoPlayerPage');
         const youtubePlayer = document.getElementById('youtubePlayer');
@@ -1305,6 +2885,7 @@
         const channelName = document.getElementById('channelName');
         const subscriberCount = document.getElementById('subscriberCount');
         const videoDescription = document.getElementById('videoDescription');
+        const descriptionCollapse = document.getElementById('descriptionCollapse');
         const likeBtn = document.getElementById('likeBtn');
         const dislikeBtn = document.getElementById('dislikeBtn');
         const likeCount = document.getElementById('likeCount');
@@ -1312,7 +2893,9 @@
         const subscribeBtn = document.getElementById('subscribeBtn');
         const shareBtn = document.getElementById('shareBtn');
         const saveBtn = document.getElementById('saveBtn');
+        const miniPlayerTrigger = document.getElementById('miniPlayerTrigger');
         const channelDetails = document.getElementById('channelDetails');
+        const relatedVideos = document.getElementById('relatedVideos');
         const uploadFormContainer = document.getElementById('uploadFormContainer');
         const uploadForm = document.getElementById('uploadForm');
         const notification = document.getElementById('notification');
@@ -1327,7 +2910,482 @@
         const downloadAppBtn = document.getElementById('downloadAppBtn');
         const downloadModal = document.getElementById('downloadModal');
         const closeDownload = document.getElementById('closeDownload');
+        const settingsBtn = document.getElementById('settingsBtn');
+        const settingsModal = document.getElementById('settingsModal');
+        const closeSettings = document.getElementById('closeSettings');
+        const darkModeToggle = document.getElementById('darkModeToggle');
+        const miniPlayerToggle = document.getElementById('miniPlayerToggle');
+        const miniPlayer = document.getElementById('miniPlayer');
+        const miniPlayerVideo = document.getElementById('miniPlayerVideo');
+        const miniPlayerTitle = document.getElementById('miniPlayerTitle');
+        const miniPlayerChannel = document.getElementById('miniPlayerChannel');
+        const miniPlayerClose = document.getElementById('miniPlayerClose');
+        const miniPlayerCloseBtn = document.getElementById('miniPlayerCloseBtn');
+        const miniPlayerPlay = document.getElementById('miniPlayerPlay');
+        const miniPlayerMute = document.getElementById('miniPlayerMute');
+        const miniPlayerExpand = document.getElementById('miniPlayerExpand');
+        const themeOptions = document.querySelectorAll('.theme-option');
+        const sidebarItems = document.querySelectorAll('.sidebar-item');
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
         
+        // Initialize App
+        function initApp() {
+            loadSettings();
+            renderVideos();
+            setupEventListeners();
+        }
+        
+        // Load settings from localStorage
+        function loadSettings() {
+            const settings = JSON.parse(localStorage.getItem('mixyupSettings')) || {};
+            
+            if (settings.darkMode !== undefined) {
+                isDarkMode = settings.darkMode;
+                document.body.classList.toggle('dark-mode', isDarkMode);
+                darkModeToggle.checked = isDarkMode;
+            }
+            
+            if (settings.sidebarCollapsed !== undefined) {
+                isSidebarCollapsed = settings.sidebarCollapsed;
+                sidebar.classList.toggle('collapsed', isSidebarCollapsed);
+            }
+            
+            if (settings.primaryColor) {
+                primaryColor = settings.primaryColor;
+                updateThemeColor(primaryColor);
+            }
+        }
+        
+        // Save settings to localStorage
+        function saveSettings() {
+            const settings = {
+                darkMode: isDarkMode,
+                sidebarCollapsed: isSidebarCollapsed,
+                primaryColor: primaryColor
+            };
+            
+            localStorage.setItem('mixyupSettings', JSON.stringify(settings));
+        }
+        
+        // Update theme color
+        function updateThemeColor(color) {
+            document.documentElement.style.setProperty('--primary', color);
+            
+            // Calculate lighter and darker variants
+            const lighter = lightenColor(color, 20);
+            const darker = darkenColor(color, 20);
+            
+            document.documentElement.style.setProperty('--primary-light', lighter);
+            document.documentElement.style.setProperty('--primary-dark', darker);
+            
+            // Update selected theme option
+            themeOptions.forEach(option => {
+                option.classList.remove('selected');
+                if (option.dataset.color === color) {
+                    option.classList.add('selected');
+                }
+            });
+        }
+        
+        // Helper function to lighten a color
+        function lightenColor(color, percent) {
+            const num = parseInt(color.replace('#', ''), 16);
+            const amt = Math.round(2.55 * percent);
+            const R = (num >> 16) + amt;
+            const G = (num >> 8 & 0x00FF) + amt;
+            const B = (num & 0x0000FF) + amt;
+            
+            return '#' + (
+                0x1000000 +
+                (R < 255 ? R < 1 ? 0 : R : 255) * 0x10000 +
+                (G < 255 ? G < 1 ? 0 : G : 255) * 0x100 +
+                (B < 255 ? B < 1 ? 0 : B : 255)
+            ).toString(16).slice(1);
+        }
+        
+        // Helper function to darken a color
+        function darkenColor(color, percent) {
+            const num = parseInt(color.replace('#', ''), 16);
+            const amt = Math.round(2.55 * percent);
+            const R = (num >> 16) - amt;
+            const G = (num >> 8 & 0x00FF) - amt;
+            const B = (num & 0x0000FF) - amt;
+            
+            return '#' + (
+                0x1000000 +
+                (R > 0 ? R < 255 ? R : 255 : 0) * 0x10000 +
+                (G > 0 ? G < 255 ? G : 255 : 0) * 0x100 +
+                (B > 0 ? B < 255 ? B : 255 : 0)
+            ).toString(16).slice(1);
+        }
+        
+        // Setup event listeners
+        function setupEventListeners() {
+            // Mobile menu toggle
+            mobileMenuBtn.addEventListener('click', () => {
+                sidebar.classList.toggle('active');
+            });
+            
+            // Sidebar toggle
+            toggleSidebar.addEventListener('click', () => {
+                isSidebarCollapsed = !isSidebarCollapsed;
+                sidebar.classList.toggle('collapsed', isSidebarCollapsed);
+                saveSettings();
+            });
+            
+            // Sidebar items
+            sidebarItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    const section = this.dataset.section;
+                    const channel = this.dataset.channel;
+                    
+                    if (section) {
+                        // Handle section click
+                        sidebarItems.forEach(i => i.classList.remove('active'));
+                        this.classList.add('active');
+                        
+                        if (section === 'subscriptions') {
+                            const followedChannels = getFollowedChannels();
+                            const channelVideos = videos.filter(v => followedChannels.includes(v.channel));
+                            renderVideos(channelVideos);
+                        } else if (section === 'history') {
+                            const watchedVideos = getWatchedVideos();
+                            const historyVideos = videos.filter(v => watchedVideos.includes(v.id));
+                            renderVideos(historyVideos);
+                        } else {
+                            currentCategory = "all";
+                            searchQuery = "";
+                            searchInput.value = "";
+                            renderVideos();
+                        }
+                    } else if (channel) {
+                        // Handle channel click
+                        const channelVideos = videos.filter(v => v.channel === channel);
+                        renderVideos(channelVideos);
+                    }
+                    
+                    // Close sidebar on mobile after selection
+                    if (window.innerWidth <= 992) {
+                        sidebar.classList.remove('active');
+                    }
+                });
+            });
+            
+            // Category chips
+            categoryChips.forEach(chip => {
+                chip.addEventListener('click', function() {
+                    categoryChips.forEach(c => c.classList.remove('active'));
+                    this.classList.add('active');
+                    currentCategory = this.dataset.category;
+                    renderVideos();
+                });
+            });
+            
+            // Search functionality
+            searchInput.addEventListener('input', () => {
+                performSearch(searchInput.value);
+            });
+            
+            searchIcon.addEventListener('click', () => {
+                if (searchInput.value.trim()) {
+                    searchQuery = searchInput.value.toLowerCase();
+                    document.querySelector('.container').style.display = 'block';
+                    videoPlayerPage.style.display = 'none';
+                    youtubePlayer.src = '';
+                    renderVideos();
+                    searchResults.style.display = 'none';
+                }
+            });
+            
+            searchInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter' && searchInput.value.trim()) {
+                    searchQuery = searchInput.value.toLowerCase();
+                    document.querySelector('.container').style.display = 'block';
+                    videoPlayerPage.style.display = 'none';
+                    youtubePlayer.src = '';
+                    renderVideos();
+                    searchResults.style.display = 'none';
+                }
+            });
+            
+            document.addEventListener('click', (e) => {
+                if (!searchInput.contains(e.target) && !searchResults.contains(e.target)) {
+                    searchResults.style.display = 'none';
+                }
+            });
+            
+            mobileSearchBtn.addEventListener('click', () => {
+                if (window.innerWidth <= 768) {
+                    searchContainer.classList.toggle('active');
+                    if (searchContainer.classList.contains('active')) {
+                        searchInput.focus();
+                    }
+                } else {
+                    searchInput.focus();
+                }
+            });
+            
+            // Video player controls
+            likeBtn.addEventListener('click', () => {
+                if (!currentVideo) return;
+                
+                const likes = getLikes();
+                const dislikes = getDislikes();
+                
+                if (likes[currentVideo.id]) {
+                    removeLike(currentVideo.id);
+                } else {
+                    setLike(currentVideo.id);
+                    if (dislikes[currentVideo.id]) {
+                        removeDislike(currentVideo.id);
+                    }
+                }
+                
+                updateLikeDislikeButtons();
+                renderVideos();
+            });
+            
+            dislikeBtn.addEventListener('click', () => {
+                if (!currentVideo) return;
+                
+                const likes = getLikes();
+                const dislikes = getDislikes();
+                
+                if (dislikes[currentVideo.id]) {
+                    removeDislike(currentVideo.id);
+                } else {
+                    setDislike(currentVideo.id);
+                    if (likes[currentVideo.id]) {
+                        removeLike(currentVideo.id);
+                    }
+                }
+                
+                updateLikeDislikeButtons();
+                renderVideos();
+            });
+            
+            subscribeBtn.addEventListener('click', () => {
+                if (!currentVideo) return;
+                
+                const isFollowing = toggleFollowChannel(currentVideo.channel);
+                subscribeBtn.textContent = isFollowing ? 'Takipte' : 'Takip Et';
+                subscribeBtn.classList.toggle('following', isFollowing);
+                
+                document.querySelectorAll('.follow-btn').forEach(btn => {
+                    if (btn.dataset.channel === currentVideo.channel) {
+                        btn.textContent = isFollowing ? 'Takipte' : 'Takip Et';
+                    }
+                });
+            });
+            
+            saveBtn.addEventListener('click', () => {
+                if (!currentVideo) return;
+                
+                const isSaved = toggleSaveVideo(currentVideo.id);
+                saveBtn.innerHTML = isSaved ? 
+                    `<i class="fas fa-check"></i><span>Kaydedildi</span>` : 
+                    `<i class="fas fa-bookmark"></i><span>Kaydet</span>`;
+            });
+            
+            shareBtn.addEventListener('click', () => {
+                if (!currentVideo) return;
+                
+                const shareUrl = `https://www.youtube.com/watch?v=${currentVideo.id}`;
+                
+                if (navigator.share) {
+                    navigator.share({
+                        title: currentVideo.title,
+                        text: currentVideo.description,
+                        url: shareUrl
+                    }).catch(err => {
+                        console.log('Error sharing:', err);
+                        showNotification('Paylaşım iptal edildi');
+                    });
+                } else {
+                    navigator.clipboard.writeText(shareUrl).then(() => {
+                        showNotification('Link kopyalandı!');
+                    }).catch(err => {
+                        console.log('Could not copy text: ', err);
+                        showNotification('Link kopyalanamadı');
+                    });
+                }
+            });
+            
+            miniPlayerTrigger.addEventListener('click', () => {
+                toggleMiniPlayer();
+            });
+            
+            channelDetails.addEventListener('click', () => {
+                if (!currentVideo) return;
+                
+                const channelVideos = videos.filter(v => v.channel === currentVideo.channel);
+                
+                currentCategory = "all";
+                searchQuery = "";
+                searchInput.value = "";
+                searchResults.style.display = "none";
+                
+                document.querySelectorAll('.category-chip').forEach(chip => chip.classList.remove('active'));
+                document.querySelector('.category-chip[data-category="all"]').classList.add('active');
+                
+                hideVideo();
+                renderVideos(channelVideos);
+            });
+            
+            descriptionCollapse.addEventListener('click', () => {
+                const desc = videoDescription;
+                if (desc.classList.contains('collapsed')) {
+                    desc.classList.remove('collapsed');
+                    descriptionCollapse.textContent = 'Daha az göster';
+                } else {
+                    desc.classList.add('collapsed');
+                    descriptionCollapse.textContent = 'Daha fazla göster';
+                }
+            });
+            
+            // Upload form
+            document.getElementById('uploadBtn').addEventListener('click', () => {
+                uploadFormContainer.style.display = 'flex';
+            });
+            
+            document.getElementById('closeUploadForm').addEventListener('click', () => {
+                uploadFormContainer.style.display = 'none';
+            });
+            
+            uploadForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                
+                const link = document.getElementById('videoLink').value;
+                const title = document.getElementById('videoTitle').value;
+                const description = document.getElementById('videoDescriptionForm').value;
+                const category = document.getElementById('videoCategory').value;
+                
+                const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+                const match = link.match(regExp);
+                
+                if (!match || match[2].length !== 11) {
+                    showNotification('Geçersiz YouTube linki!');
+                    return;
+                }
+                
+                const videoId = match[2];
+                
+                showLoading();
+                
+                setTimeout(() => {
+                    hideLoading();
+                    uploadFormContainer.style.display = 'none';
+                    uploadForm.reset();
+                    
+                    sendVideoByEmail({
+                        link: `https://www.youtube.com/watch?v=${videoId}`,
+                        title: title,
+                        description: description,
+                        category: category
+                    });
+                    
+                    showNotification('Video paylaşım isteğiniz gönderildi! E-posta uygulamanız açılacak.');
+                }, 1500);
+            });
+            
+            // Download app
+            downloadAppBtn.addEventListener('click', () => {
+                downloadModal.style.display = 'flex';
+            });
+            
+            closeDownload.addEventListener('click', () => {
+                downloadModal.style.display = 'none';
+            });
+            
+            // Settings
+            settingsBtn.addEventListener('click', () => {
+                settingsModal.style.display = 'flex';
+            });
+            
+            closeSettings.addEventListener('click', () => {
+                settingsModal.style.display = 'none';
+            });
+            
+            // Settings tabs
+            document.querySelectorAll('.settings-tab').forEach(tab => {
+                tab.addEventListener('click', function() {
+                    document.querySelectorAll('.settings-tab').forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    const tabName = this.dataset.tab;
+                    document.querySelectorAll('[data-tab-content]').forEach(content => {
+                        content.style.display = content.dataset.tabContent === tabName ? 'block' : 'none';
+                    });
+                });
+            });
+            
+            // Dark mode toggle
+            darkModeToggle.addEventListener('change', function() {
+                isDarkMode = this.checked;
+                document.body.classList.toggle('dark-mode', isDarkMode);
+                saveSettings();
+            });
+            
+            // Theme color selection
+            themeOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    primaryColor = this.dataset.color;
+                    updateThemeColor(primaryColor);
+                    saveSettings();
+                });
+            });
+            
+            // Mini player controls
+            miniPlayerClose.addEventListener('click', closeMiniPlayer);
+            miniPlayerCloseBtn.addEventListener('click', closeMiniPlayer);
+            miniPlayerPlay.addEventListener('click', toggleMiniPlayerPlay);
+            miniPlayerMute.addEventListener('click', toggleMiniPlayerMute);
+            miniPlayerExpand.addEventListener('click', expandMiniPlayer);
+            
+            // Keyboard shortcuts
+            document.addEventListener('keydown', (e) => {
+                // Space to play/pause (when not focused on input fields)
+                if (e.code === 'Space' && e.target.tagName !== 'INPUT' && e.target.tagName !== 'TEXTAREA') {
+                    e.preventDefault();
+                    toggleMiniPlayerPlay();
+                }
+                
+                // M to mute/unmute
+                if (e.code === 'KeyM') {
+                    toggleMiniPlayerMute();
+                }
+                
+                // F to toggle fullscreen
+                if (e.code === 'KeyF') {
+                    expandMiniPlayer();
+                }
+                
+                // Esc to close mini player
+                if (e.code === 'Escape' && miniPlayerActive) {
+                    closeMiniPlayer();
+                }
+            });
+            
+            // Logo click
+            document.querySelector('.logo').addEventListener('click', () => {
+                hideVideo();
+                currentCategory = "all";
+                searchQuery = "";
+                searchInput.value = "";
+                
+                document.querySelectorAll('.category-chip').forEach(chip => chip.classList.remove('active'));
+                document.querySelector('.category-chip[data-category="all"]').classList.add('active');
+                
+                renderVideos();
+            });
+            
+            // Notifications
+            document.getElementById('notificationsBtn').addEventListener('click', () => {
+                showNotification('Yeni bildiriminiz yok');
+            });
+        }
+        
+        // Local storage functions
         function getWatchedVideos() {
             return JSON.parse(localStorage.getItem('watchedVideos')) || [];
         }
@@ -1447,6 +3505,7 @@
             localStorage.setItem('searchHistory', JSON.stringify(searchHistory));
         }
         
+        // UI Functions
         function showNotification(message) {
             notificationText.textContent = message;
             notification.style.display = 'block';
@@ -1555,7 +3614,7 @@
                         const historyItem = document.createElement('div');
                         historyItem.className = 'search-result-item';
                         historyItem.innerHTML = `
-                            <div style="margin-right: 12px;">🔍</div>
+                            <div style="margin-right: 12px;"><i class="fas fa-search"></i></div>
                             <div>${item}</div>
                         `;
                         
@@ -1615,7 +3674,7 @@
                     <div class="thumbnail-container">
                         <img class="thumbnail" src="https://i.ytimg.com/vi/${video.id}/hqdefault.jpg" loading="lazy" alt="${video.title}">
                         <span class="video-duration">${video.duration}</span>
-                        <span class="watched-badge" style="display: ${isWatched ? 'block' : 'none'}">İzlendi</span>
+                        <span class="watched-badge" style="display: ${isWatched ? 'block' : 'none'}"><i class="fas fa-check"></i> İzlendi</span>
                     </div>
                     <div class="video-info">
                         <div class="channel-icon">${channelInitial}</div>
@@ -1627,7 +3686,7 @@
                                     ${isFollowed ? 'Takipte' : 'Takip Et'}
                                 </button>
                             </div>
-                            <div class="video-stats">${video.views} • ${video.uploadDate}</div>
+                            <div class="video-stats">${video.views} • ${video.uploadDate} <i class="fas fa-check-circle"></i></div>
                         </div>
                     </div>
                 `;
@@ -1656,6 +3715,67 @@
                     }
                 });
             });
+            
+            // Render related videos in sidebar
+            if (videoPlayerPage.style.display === 'block' && currentVideo) {
+                renderRelatedVideos();
+            }
+        }
+        
+        function renderRelatedVideos() {
+            relatedVideos.innerHTML = '';
+            
+            // Get videos from same channel first
+            const sameChannelVideos = videos
+                .filter(v => v.channel === currentVideo.channel && v.id !== currentVideo.id)
+                .slice(0, 3);
+            
+            // Then fill with other related videos
+            const relatedCategoryVideos = videos
+                .filter(v => v.category === currentVideo.category && v.id !== currentVideo.id && !sameChannelVideos.some(s => s.id === v.id))
+                .slice(0, 5 - sameChannelVideos.length);
+            
+            const relatedVideosList = [...sameChannelVideos, ...relatedCategoryVideos];
+            
+            relatedVideosList.forEach(video => {
+                const isWatched = getWatchedVideos().includes(video.id);
+                
+                const relatedVideoItem = document.createElement('div');
+                relatedVideoItem.className = 'related-video-item';
+                relatedVideoItem.dataset.videoId = video.id;
+                relatedVideoItem.dataset.channel = video.channel;
+                
+                relatedVideoItem.innerHTML = `
+                    <img class="related-video-thumbnail" src="https://i.ytimg.com/vi/${video.id}/hqdefault.jpg" alt="${video.title}">
+                    <div class="related-video-info">
+                        <div class="related-video-title">${video.title}</div>
+                        <div class="related-video-channel">${video.channel}</div>
+                        <div class="related-video-stats">${video.views} • ${video.uploadDate}</div>
+                    </div>
+                `;
+                
+                if (isWatched) {
+                    const watchedBadge = document.createElement('div');
+                    watchedBadge.className = 'watched-badge';
+                    watchedBadge.innerHTML = '<i class="fas fa-check"></i>';
+                    watchedBadge.style.position = 'absolute';
+                    watchedBadge.style.top = '8px';
+                    watchedBadge.style.left = '8px';
+                    watchedBadge.style.fontSize = '0.7rem';
+                    relatedVideoItem.querySelector('.related-video-thumbnail').parentNode.style.position = 'relative';
+                    relatedVideoItem.querySelector('.related-video-thumbnail').parentNode.appendChild(watchedBadge);
+                }
+                
+                relatedVideos.appendChild(relatedVideoItem);
+            });
+            
+            document.querySelectorAll('.related-video-item').forEach(item => {
+                item.addEventListener('click', () => {
+                    const videoId = item.dataset.videoId;
+                    const channel = item.dataset.channel;
+                    showVideo(videoId, channel);
+                });
+            });
         }
         
         function showVideo(videoId, channel) {
@@ -1667,12 +3787,14 @@
             document.querySelector('.container').style.display = 'none';
             videoPlayerPage.style.display = 'block';
             
-            youtubePlayer.src = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
+            youtubePlayer.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&enablejsapi=1`;
             videoPlayerTitle.textContent = video.title;
             channelAvatar.textContent = video.channel.charAt(0);
             channelName.textContent = video.channel;
             subscriberCount.textContent = video.subscribers;
             videoDescription.textContent = video.description;
+            videoDescription.classList.add('collapsed');
+            descriptionCollapse.textContent = 'Daha fazla göster';
             
             updateLikeDislikeButtons();
             
@@ -1680,8 +3802,8 @@
             subscribeBtn.classList.toggle('following', isChannelFollowed(video.channel));
             
             saveBtn.innerHTML = isVideoSaved(video.id) ? 
-                `<span>✔️</span><span>Kaydedildi</span>` : 
-                `<span>➕</span><span>Kaydet</span>`;
+                `<i class="fas fa-check"></i><span>Kaydedildi</span>` : 
+                `<i class="fas fa-bookmark"></i><span>Kaydet</span>`;
             
             setWatchedVideo(videoId);
             
@@ -1695,13 +3817,29 @@
                 if (badge) badge.style.display = 'block';
             }
             
+            renderRelatedVideos();
+            
             window.scrollTo(0, 0);
+            
+            // Initialize mini player
+            miniPlayerVideo.innerHTML = `<iframe src="https://www.youtube.com/embed/${videoId}?autoplay=1&enablejsapi=1" frameborder="0" allowfullscreen></iframe>`;
+            miniPlayerTitle.textContent = video.title;
+            miniPlayerChannel.textContent = video.channel.charAt(0);
+            
+            // Show mini player if it was active
+            if (miniPlayerActive) {
+                miniPlayer.style.display = 'block';
+                miniPlayer.classList.add('active');
+            }
         }
         
         function hideVideo() {
             document.querySelector('.container').style.display = 'block';
             videoPlayerPage.style.display = 'none';
             youtubePlayer.src = '';
+            
+            // Close mini player when leaving video page
+            closeMiniPlayer();
         }
         
         function updateLikeDislikeButtons() {
@@ -1735,230 +3873,66 @@
             window.location.href = mailtoLink;
         }
         
-        likeBtn.addEventListener('click', () => {
+        // Mini Player Functions
+        function toggleMiniPlayer() {
             if (!currentVideo) return;
             
-            const likes = getLikes();
-            const dislikes = getDislikes();
+            miniPlayerActive = !miniPlayerActive;
             
-            if (likes[currentVideo.id]) {
-                removeLike(currentVideo.id);
+            if (miniPlayerActive) {
+                miniPlayer.style.display = 'block';
+                setTimeout(() => {
+                    miniPlayer.classList.add('active');
+                }, 10);
             } else {
-                setLike(currentVideo.id);
-                if (dislikes[currentVideo.id]) {
-                    removeDislike(currentVideo.id);
-                }
+                miniPlayer.classList.remove('active');
+                setTimeout(() => {
+                    miniPlayer.style.display = 'none';
+                }, 300);
             }
-            
-            updateLikeDislikeButtons();
-            renderVideos();
-        });
+        }
         
-        dislikeBtn.addEventListener('click', () => {
-            if (!currentVideo) return;
-            
-            const likes = getLikes();
-            const dislikes = getDislikes();
-            
-            if (dislikes[currentVideo.id]) {
-                removeDislike(currentVideo.id);
-            } else {
-                setDislike(currentVideo.id);
-                if (likes[currentVideo.id]) {
-                    removeLike(currentVideo.id);
-                }
-            }
-            
-            updateLikeDislikeButtons();
-            renderVideos();
-        });
-        
-        subscribeBtn.addEventListener('click', () => {
-            if (!currentVideo) return;
-            
-            const isFollowing = toggleFollowChannel(currentVideo.channel);
-            subscribeBtn.textContent = isFollowing ? 'Takipte' : 'Takip Et';
-            subscribeBtn.classList.toggle('following', isFollowing);
-            
-            document.querySelectorAll('.follow-btn').forEach(btn => {
-                if (btn.dataset.channel === currentVideo.channel) {
-                    btn.textContent = isFollowing ? 'Takipte' : 'Takip Et';
-                }
-            });
-        });
-        
-        saveBtn.addEventListener('click', () => {
-            if (!currentVideo) return;
-            
-            const isSaved = toggleSaveVideo(currentVideo.id);
-            saveBtn.innerHTML = isSaved ? 
-                `<span>✔️</span><span>Kaydedildi</span>` : 
-                `<span>➕</span><span>Kaydet</span>`;
-        });
-        
-        shareBtn.addEventListener('click', () => {
-            if (!currentVideo) return;
-            
-            const shareUrl = `https://www.youtube.com/watch?v=${currentVideo.id}`;
-            
-            if (navigator.share) {
-                navigator.share({
-                    title: currentVideo.title,
-                    text: currentVideo.description,
-                    url: shareUrl
-                }).catch(err => {
-                    console.log('Error sharing:', err);
-                    showNotification('Paylaşım iptal edildi');
-                });
-            } else {
-                navigator.clipboard.writeText(shareUrl).then(() => {
-                    showNotification('Link kopyalandı!');
-                }).catch(err => {
-                    console.log('Could not copy text: ', err);
-                    showNotification('Link kopyalanamadı');
-                });
-            }
-        });
-        
-        channelDetails.addEventListener('click', () => {
-            if (!currentVideo) return;
-            
-            const channelVideos = videos.filter(v => v.channel === currentVideo.channel);
-            
-            currentCategory = "all";
-            searchQuery = "";
-            searchInput.value = "";
-            searchResults.style.display = "none";
-            
-            document.querySelectorAll('.category-chip').forEach(chip => chip.classList.remove('active'));
-            document.querySelector('.category-chip[data-category="all"]').classList.add('active');
-            
-            hideVideo();
-            renderVideos(channelVideos);
-        });
-        
-        document.getElementById('uploadBtn').addEventListener('click', () => {
-            uploadFormContainer.style.display = 'flex';
-        });
-        
-        document.getElementById('closeUploadForm').addEventListener('click', () => {
-            uploadFormContainer.style.display = 'none';
-        });
-        
-        downloadAppBtn.addEventListener('click', () => {
-            downloadModal.style.display = 'flex';
-        });
-        
-        closeDownload.addEventListener('click', () => {
-            downloadModal.style.display = 'none';
-        });
-        
-        uploadForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            
-            const link = document.getElementById('videoLink').value;
-            const title = document.getElementById('videoTitle').value;
-            const description = document.getElementById('videoDescription').value;
-            const category = document.getElementById('videoCategory').value;
-            
-            const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
-            const match = link.match(regExp);
-            
-            if (!match || match[2].length !== 11) {
-                showNotification('Geçersiz YouTube linki!');
-                return;
-            }
-            
-            const videoId = match[2];
-            
-            showLoading();
-            
+        function closeMiniPlayer() {
+            miniPlayerActive = false;
+            miniPlayer.classList.remove('active');
             setTimeout(() => {
-                hideLoading();
-                uploadFormContainer.style.display = 'none';
-                uploadForm.reset();
-                
-                sendVideoByEmail({
-                    link: `https://www.youtube.com/watch?v=${videoId}`,
-                    title: title,
-                    description: description,
-                    category: category
-                });
-                
-                showNotification('Video paylaşım isteğiniz gönderildi! E-posta uygulamanız açılacak.');
-            }, 1500);
-        });
+                miniPlayer.style.display = 'none';
+            }, 300);
+        }
         
-        categoryChips.forEach(chip => {
-            chip.addEventListener('click', () => {
-                categoryChips.forEach(c => c.classList.remove('active'));
-                chip.classList.add('active');
-                currentCategory = chip.dataset.category;
-                renderVideos();
-            });
-        });
-        
-        searchInput.addEventListener('input', () => {
-            performSearch(searchInput.value);
-        });
-        
-        searchIcon.addEventListener('click', () => {
-            if (searchInput.value.trim()) {
-                searchQuery = searchInput.value.toLowerCase();
-                document.querySelector('.container').style.display = 'block';
-                videoPlayerPage.style.display = 'none';
-                youtubePlayer.src = '';
-                renderVideos();
-                searchResults.style.display = 'none';
-            }
-        });
-        
-        searchInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter' && searchInput.value.trim()) {
-                searchQuery = searchInput.value.toLowerCase();
-                document.querySelector('.container').style.display = 'block';
-                videoPlayerPage.style.display = 'none';
-                youtubePlayer.src = '';
-                renderVideos();
-                searchResults.style.display = 'none';
-            }
-        });
-        
-        document.addEventListener('click', (e) => {
-            if (!searchInput.contains(e.target) && !searchResults.contains(e.target)) {
-                searchResults.style.display = 'none';
-            }
-        });
-        
-        mobileSearchBtn.addEventListener('click', () => {
-            if (window.innerWidth <= 768) {
-                searchContainer.classList.toggle('active');
-                if (searchContainer.classList.contains('active')) {
-                    searchInput.focus();
-                }
-            } else {
-                searchInput.focus();
-            }
-        });
-        
-        document.getElementById('notificationsBtn').addEventListener('click', () => {
-            showNotification('Yeni bildiriminiz yok');
-        });
-        
-        document.querySelector('.logo').addEventListener('click', () => {
-            hideVideo();
-            currentCategory = "all";
-            searchQuery = "";
-            searchInput.value = "";
+        function toggleMiniPlayerPlay() {
+            // In a real implementation, this would control the YouTube player
+            showNotification(miniPlayerPlay.querySelector('i').classList.contains('fa-play') ? 'Oynatılıyor' : 'Durduruldu');
             
-            document.querySelectorAll('.category-chip').forEach(chip => chip.classList.remove('active'));
-            document.querySelector('.category-chip[data-category="all"]').classList.add('active');
+            miniPlayerPlay.querySelector('i').classList.toggle('fa-play');
+            miniPlayerPlay.querySelector('i').classList.toggle('fa-pause');
+        }
+        
+        function toggleMiniPlayerMute() {
+            // In a real implementation, this would mute/unmute the YouTube player
+            showNotification(miniPlayerMute.querySelector('i').classList.contains('fa-volume-up') ? 'Sessiz' : 'Ses açık');
             
-            renderVideos();
-        });
+            miniPlayerMute.querySelector('i').classList.toggle('fa-volume-up');
+            miniPlayerMute.querySelector('i').classList.toggle('fa-volume-mute');
+        }
         
-        renderVideos();
+        function expandMiniPlayer() {
+            // In a real implementation, this would expand to full screen
+            showNotification('Tam ekran modu');
+            
+            // For demo purposes, just show the main video player
+            if (videoPlayerPage.style.display === 'none') {
+                document.querySelector('.container').style.display = 'none';
+                videoPlayerPage.style.display = 'block';
+            }
+            
+            closeMiniPlayer();
+        }
         
+        // Initialize the app
+        initApp();
+        
+        // Demo notification for followed channels
         if (getFollowedChannels().length > 0 && Notification.permission === 'granted') {
             setTimeout(() => {
                 new Notification('Mixyup', {
